@@ -37,12 +37,32 @@ LevelStatus GameWorld::Update() {
 			item = m_objects.erase(item);
 		}
 	}
+
 	m_SunCountDown--;
 	if (m_SunCountDown == 0)
 	{
 		m_SunCountDown = SunCountInterval;
 
 		m_objects.emplace_front(std::make_shared<SunSky>(randInt(SunSky::MinX, SunSky::MaxX), WINDOW_HEIGHT - 1, randInt(SunSky::MinFallTime, SunSky::MaxFallTime),shared_from_this()));
+	}
+
+	m_ZombieCountDown--;
+	if (m_ZombieCountDown == 0)
+	{
+		m_ZombieCountDown = 150 > 600 - 20 * m_Wave ? 150 : 600 - 20 * m_Wave;
+		static int ZombieNum = (15 + m_Wave) / 10;
+		
+		while (ZombieNum > 0) {
+			ZombieNum--;
+
+			static int const ProbabilityRegular_Zombie = 20;
+			static int ProbabilityPole_Vaulting_Zombie = 2 * (m_Wave - 8 > 0 ? m_Wave - 8 : 0);
+			static int ProbabilityBucket_Head_Zombie = 3 * (m_Wave - 15 > 0 ? m_Wave - 15 : 0);
+			
+			//TODO: calculate possibility of each zombie.
+
+			m_objects.emplace_front(std::make_shared<Regular_Zombie>(randInt(Regular_Zombie::MinX, Regular_Zombie::MaxX), Regular_Zombie::PossibleY[randInt(0,0)], shared_from_this()));
+		}
 	}
 
   return LevelStatus::ONGOING;

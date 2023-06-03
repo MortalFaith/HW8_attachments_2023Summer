@@ -142,4 +142,34 @@ void Pea::Update()
 	}
 }
 
+void Zombie::Update() 
+{
+	if (m_HP <= 0)
+	{
+		ChangeStatus();
+		return;
+	}
+}
+
+void Zombie::OnClick()
+{
+	return;
+}
+
+void Zombie::Collapse()
+{
+	//TODO
+	return;
+}
+
+void Regular_Zombie::Update()
+{
+	Zombie::Update();
+	MoveTo(GetX() - 1, GetY());
+}
+
+void Regular_Zombie::Collapse()
+{
+	Zombie::Collapse();
+}
 

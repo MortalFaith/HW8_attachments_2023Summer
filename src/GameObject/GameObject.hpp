@@ -265,4 +265,36 @@ public :
 
 };
 
+
+
+class Zombie : public ObjectAffectWorld
+{
+public:
+	static inline const int ZombieWidth = 20, ZombieHeight = 80;
+	static inline int const MinX = WINDOW_WIDTH - 40;
+	static inline int const MaxX = WINDOW_WIDTH - 1;
+	static inline int const PossibleY[1] = { 75 };
+	//TODO: calculate the possible Y of spawn of Zombies.
+
+	Zombie(ImageID imageID, int x, int y, int HP, pGameWorld thisworld) : ObjectAffectWorld(imageID, x, y, LAYER_ZOMBIES, ZombieWidth, ZombieHeight, ANIMID_WALK_ANIM, thisworld), m_HP(HP) {};
+	virtual void Update() = 0;
+	virtual void OnClick() = 0;
+	virtual void Collapse() = 0;
+
+
+private:
+	int m_HP;
+};
+
+class Regular_Zombie : public Zombie
+{
+public:
+	static inline const int Regular_ZombieHP = 200;
+	
+	Regular_Zombie(int x, int y, pGameWorld thisworld) : Zombie(IMGID_REGULAR_ZOMBIE, x, y, Regular_ZombieHP, thisworld) {};
+	
+	virtual void Update();
+	virtual void OnClick() {};
+	virtual void Collapse();
+};
 #endif // !GAMEOBJECT_HPP__
