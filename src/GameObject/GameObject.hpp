@@ -74,7 +74,7 @@ public:
 	static inline int const SunWidth = 80;
 	static inline int const SunHeight = 80;
 	static inline int const FallFlower = 12;
-	static inline int const SunValue = 250;
+	static inline int const SunValue = 114514114514;
 
 	Sun(int init_x, int init_y, int falltime, pGameWorld thisworld) : ObjectAffectSun(IMGID_SUN, init_x, init_y, LAYER_SUN, SunWidth, SunHeight, ANIMID_IDLE_ANIM, thisworld), m_falltime(falltime) {};
 	virtual ~Sun() = default;
