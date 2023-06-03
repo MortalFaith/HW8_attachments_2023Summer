@@ -68,6 +68,10 @@ void PlantSpot::OnClick()
 		m_world->AddObject(std::make_shared<Repeater>(GetX(), GetY(), m_world));
 		break;
 
+	case FunctionName::TestZombie:
+		m_world->AddObject(std::make_shared<RegularZombie>(GetX(), GetY(), m_world));
+		break;
+
 	default:
 		break;
 	}
@@ -194,7 +198,7 @@ void Wallnut::Update()
 void Cherry::Update()
 {
 	Plant::Update();  // unnecessary
-	if (m_BoomTime > 1)
+	if (m_BoomTime > 0)
 	{
 		m_BoomTime--;
 	}
@@ -214,7 +218,6 @@ void Boom::Update()
 	else
 	{
 		ChangeStatus();
-
 	}
 }
 
@@ -224,7 +227,12 @@ void Repeater::Update()
 	{
 		m_ShootCoolTime--;
 	}
-	else if(m_ShootCoolTime < 0)
+	else if(m_ShootCoolTime == 0 && m_world->existZombie(GetY()))
+	{
+		m_world->AddObject(std::make_shared<Pea>(GetX() + RepeaterOffsetX, GetY() + RepeaterOffsetY, m_world));
+		m_ShootCoolTime--;
+	}
+	else if (m_ShootCoolTime < 0)
 	{
 		if (m_ShootCoolTime >= PeaInterval)
 		{
@@ -236,9 +244,15 @@ void Repeater::Update()
 			m_ShootCoolTime = RepeaterInterval;
 		}
 	}
-	else if (m_ShootCoolTime == 0)
+}
+
+void Zombie::Update()
+{
+	if (m_HP <= 0 || GetX() <= 0)
 	{
-		m_world->AddObject(std::make_shared<Pea>(GetX() + RepeaterOffsetX, GetY() + RepeaterOffsetY, m_world));
-		m_ShootCoolTime--;
+		ChangeStatus();
+		return;
 	}
+	MoveTo(GetX() - m_speed, GetY());
+
 }

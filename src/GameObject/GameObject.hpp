@@ -26,7 +26,9 @@ public:
 	  UnDefine,
 	  NoInteract,
 	  AffectWorld,
-	  ConditionInteract,
+	  Plant,
+	  PlantAttack,
+	  Zombie,
   };  
   
   GameObject(ImageID imageID, int x, int y, LayerID layer, int width, int height, AnimID animID, ObjectType type = ObjectType::UnDefine) : ObjectBase(imageID, x, y, layer, width, height, animID), m_type(type) {};
@@ -61,7 +63,7 @@ public :
 class ObjectAffectWorld : public GameObject
 {
 public:
-	ObjectAffectWorld(ImageID imageID, int x, int y, LayerID layer, int width, int height, AnimID animID, pGameWorld thisworld) : GameObject(imageID, x, y, layer, width, height, animID, ObjectType::AffectWorld), m_world(thisworld) {};
+	ObjectAffectWorld(ImageID imageID, int x, int y, LayerID layer, int width, int height, AnimID animID, pGameWorld thisworld, ObjectType type) : GameObject(imageID, x, y, layer, width, height, animID, type), m_world(thisworld) {};
 
 protected:
 	pGameWorld m_world;
@@ -79,7 +81,7 @@ public:
 	static inline int const SunValue = 25;
 	static inline int const VanishTime = -300 + 1;
 
-	Sun(int init_x, int init_y, int falltime, pGameWorld thisworld) : ObjectAffectWorld(IMGID_SUN, init_x, init_y, LAYER_SUN, SunWidth, SunHeight, ANIMID_IDLE_ANIM, thisworld), m_falltime(falltime) {};
+	Sun(int init_x, int init_y, int falltime, pGameWorld thisworld) : ObjectAffectWorld(IMGID_SUN, init_x, init_y, LAYER_SUN, SunWidth, SunHeight, ANIMID_IDLE_ANIM, thisworld, ObjectType::AffectWorld), m_falltime(falltime) {};
 	virtual ~Sun() = default;
 
 	virtual void Update() = 0;
@@ -119,7 +121,7 @@ class PlantSpot : public ObjectAffectWorld  // option<>
 public:
 	static inline const int PlantSpotWidth = 60, PlantSpotHeight = 80;
 
-	PlantSpot(int x, int y, pGameWorld thisworld) : ObjectAffectWorld(IMGID_NONE, x, y, LAYER_UI, PlantSpotWidth, PlantSpotHeight, ANIMID_NO_ANIMATION, thisworld) {};
+	PlantSpot(int x, int y, pGameWorld thisworld) : ObjectAffectWorld(IMGID_NONE, x, y, LAYER_UI, PlantSpotWidth, PlantSpotHeight, ANIMID_NO_ANIMATION, thisworld, ObjectType::AffectWorld) {};
 	virtual void OnClick();
 	virtual void Update() {};
 
@@ -130,7 +132,7 @@ class Shovel : public ObjectAffectWorld
 public:
 	static inline const int ShovelX = 600, ShovelY = (WINDOW_HEIGHT - 40), ShovelWidth = 50, ShovelHeight = 50;
 
-	Shovel(pGameWorld thisworld) : ObjectAffectWorld(IMGID_SHOVEL, ShovelX, ShovelY, LAYER_UI, ShovelWidth, ShovelHeight, ANIMID_NO_ANIMATION, thisworld) {};
+	Shovel(pGameWorld thisworld) : ObjectAffectWorld(IMGID_SHOVEL, ShovelX, ShovelY, LAYER_UI, ShovelWidth, ShovelHeight, ANIMID_NO_ANIMATION, thisworld, ObjectType::AffectWorld) {};
 
 	virtual void Update() {};
 	virtual void OnClick() ;
@@ -142,7 +144,7 @@ class Seed : public ObjectAffectWorld
 public:
 	static inline const int SeedXStart = 130, SeedXInterval = 60, SeedY = WINDOW_HEIGHT - 44, SeedWidth = 50, SeedHeight = 70;
 
-	Seed(ImageID imageID, int x_index, int price, int cooltime, pGameWorld thisworld) : ObjectAffectWorld(imageID, SeedXStart + x_index * SeedXInterval,SeedY, LAYER_UI, SeedWidth, SeedHeight, ANIMID_NO_ANIMATION, thisworld), m_price(price), m_CoolTime(cooltime) {};
+	Seed(ImageID imageID, int x_index, int price, int cooltime, pGameWorld thisworld) : ObjectAffectWorld(imageID, SeedXStart + x_index * SeedXInterval,SeedY, LAYER_UI, SeedWidth, SeedHeight, ANIMID_NO_ANIMATION, thisworld, ObjectType::AffectWorld), m_price(price), m_CoolTime(cooltime) {};
 
 	void OnClickTemplt(FunctionName);
 
@@ -151,6 +153,14 @@ public:
 private:
 	const int m_price;
 	const int m_CoolTime;
+};
+
+class ZombieSeed : public Seed
+{
+public:
+	ZombieSeed(pGameWorld thisworld) :Seed(IMGID_SEED_CHERRY_BOMB, 6, 0, 0, thisworld) {};
+	virtual void Update() {};
+	virtual void OnClick() { Seed::OnClickTemplt(FunctionName::TestZombie); };
 };
 
 class SunFlowerSeed : public Seed
@@ -212,7 +222,7 @@ class CoolDown : public ObjectAffectWorld
 public:
 	static inline const int CoolDownWidth = 50, CoolDownHeight = 70;
 
-	CoolDown(int x, int y, int cooltime, FunctionName covered, int price, pGameWorld thisworld) : ObjectAffectWorld(IMGID_COOLDOWN_MASK, x, y, LAYER_COOLDOWN_MASK, CoolDownWidth, CoolDownHeight, ANIMID_NO_ANIMATION, thisworld), m_cooltime(cooltime),m_CoveredPrice(price), m_covered(covered) {};
+	CoolDown(int x, int y, int cooltime, FunctionName covered, int price, pGameWorld thisworld) : ObjectAffectWorld(IMGID_COOLDOWN_MASK, x, y, LAYER_COOLDOWN_MASK, CoolDownWidth, CoolDownHeight, ANIMID_NO_ANIMATION, thisworld, ObjectType::AffectWorld), m_cooltime(cooltime),m_CoveredPrice(price), m_covered(covered) {};
 
 	virtual void Update();
 	virtual void OnClick();
@@ -230,9 +240,12 @@ class Plant : public ObjectAffectWorld
 public:
 	static inline const int PlantWidth = 60, PlandHeight = 80;
 	
-	Plant(ImageID imageID, int x, int y, int HP, pGameWorld thisworld) : ObjectAffectWorld(imageID, x, y, LAYER_PLANTS, PlantWidth, PlandHeight, ANIMID_IDLE_ANIM, thisworld), m_HP(HP) {};
+	Plant(ImageID imageID, int x, int y, int HP, pGameWorld thisworld) : ObjectAffectWorld(imageID, x, y, LAYER_PLANTS, PlantWidth, PlandHeight, ANIMID_IDLE_ANIM, thisworld, ObjectType::Plant), m_HP(HP) {};
 	virtual void Update() = 0;
 	virtual void OnClick() = 0;
+
+	int GetHP() { return m_HP; };
+	void SetHP(int HP) { m_HP = HP; };
 
 
 protected:
@@ -271,7 +284,7 @@ class Pea : public ObjectAffectWorld
 public :
 	static inline const int PeaWidth = 28, PeaHeight = 28, PeaDamage = 20;
 
-	Pea(int x, int y, pGameWorld thisworld) : ObjectAffectWorld(IMGID_PEA, x, y, LAYER_PROJECTILES, PeaWidth, PeaHeight, ANIMID_NO_ANIMATION, thisworld) {};
+	Pea(int x, int y, pGameWorld thisworld) : ObjectAffectWorld(IMGID_PEA, x, y, LAYER_PROJECTILES, PeaWidth, PeaHeight, ANIMID_NO_ANIMATION, thisworld, ObjectType::PlantAttack) {};
 
 	virtual void Update();
 	virtual void OnClick() {};
@@ -313,7 +326,7 @@ class Boom : public ObjectAffectWorld
 public:
 	static inline const int BoomTime = 3, BoomWidth = 3 * LAWN_GRID_WIDTH, BoomHeight = 3 * LAWN_GRID_HEIGHT;
 
-	Boom(int x, int y, pGameWorld thisworld) : ObjectAffectWorld(IMGID_EXPLOSION, x, y, LAYER_PROJECTILES, BoomWidth, BoomHeight, ANIMID_NO_ANIMATION, thisworld) {};
+	Boom(int x, int y, pGameWorld thisworld) : ObjectAffectWorld(IMGID_EXPLOSION, x, y, LAYER_PROJECTILES, BoomWidth, BoomHeight, ANIMID_NO_ANIMATION, thisworld, ObjectType::PlantAttack) {};
 
 	virtual void Update();
 	virtual void OnClick() {};
@@ -335,6 +348,37 @@ public:
 
 private:
 	int m_ShootCoolTime{0};
+};
+
+
+class Zombie : public ObjectAffectWorld
+{
+public:
+	static inline const int ZombieWidth = 20, ZombieHeight = 80, ZombieGamage = 3;
+
+	Zombie(ImageID imageID, int x, int y, int HP, int speed, AnimID animID, pGameWorld thisworld) : ObjectAffectWorld(imageID, x, y, LAYER_ZOMBIES, ZombieWidth, ZombieHeight, animID, thisworld, ObjectType::Zombie), m_HP(HP), m_speed(speed) {};
+
+	virtual void Update();
+	virtual void OnClick() {};
+
+	int GetHP() { return m_HP; };
+	void SetHP(int HP) { m_HP = HP; };
+
+protected:
+	int m_HP;
+	int m_speed;
+};
+
+class RegularZombie : public Zombie
+{
+public:
+	static inline const int RegularZombieHP = 200, RegularZombieSpeed = 1;
+
+	RegularZombie(int x, int y, pGameWorld thisworld) : Zombie(IMGID_REGULAR_ZOMBIE, x, y, RegularZombieHP, RegularZombieSpeed, ANIMID_WALK_ANIM, thisworld) {};
+
+	virtual void Update() { Zombie::Update(); };
+	virtual void OnClick() {};
+
 };
 
 #endif // !GAMEOBJECT_HPP__
