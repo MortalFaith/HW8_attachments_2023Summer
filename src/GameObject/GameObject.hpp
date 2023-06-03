@@ -4,6 +4,8 @@
 #include <memory>
 #include "ObjectBase.hpp"
 #include "GameWorld.hpp"
+enum class FunctionName;
+
 
 // Declares the class name GameWorld so that its pointers can be used.
 class GameWorld;
@@ -23,7 +25,7 @@ public:
   {
 	  UnDefine,
 	  NoInteract,
-	  AffectSun,
+	  AffectWorld,
 	  ConditionInteract,
   };  
   
@@ -56,10 +58,10 @@ public :
 
 // Declares the class name GameWorld so that its pointers can be used.
 
-class ObjectAffectSun : public GameObject
+class ObjectAffectWorld : public GameObject
 {
 public:
-	ObjectAffectSun(ImageID imageID, int x, int y, LayerID layer, int width, int height, AnimID animID, pGameWorld thisworld) : GameObject(imageID, x, y, layer, width, height, animID, ObjectType::AffectSun), m_world(thisworld) {};
+	ObjectAffectWorld(ImageID imageID, int x, int y, LayerID layer, int width, int height, AnimID animID, pGameWorld thisworld) : GameObject(imageID, x, y, layer, width, height, animID, ObjectType::AffectWorld), m_world(thisworld) {};
 
 protected:
 	pGameWorld m_world;
@@ -67,16 +69,16 @@ protected:
 
 
 
-class Sun : public ObjectAffectSun  // abstract
+class Sun : public ObjectAffectWorld  // abstract
 {
 
 public:
 	static inline int const SunWidth = 80;
 	static inline int const SunHeight = 80;
 	static inline int const FallFlower = 12;
-	static inline int const SunValue = 114514114514;
+	static inline int const SunValue = 25;
 
-	Sun(int init_x, int init_y, int falltime, pGameWorld thisworld) : ObjectAffectSun(IMGID_SUN, init_x, init_y, LAYER_SUN, SunWidth, SunHeight, ANIMID_IDLE_ANIM, thisworld), m_falltime(falltime) {};
+	Sun(int init_x, int init_y, int falltime, pGameWorld thisworld) : ObjectAffectWorld(IMGID_SUN, init_x, init_y, LAYER_SUN, SunWidth, SunHeight, ANIMID_IDLE_ANIM, thisworld), m_falltime(falltime) {};
 	virtual ~Sun() = default;
 
 	virtual void Update() = 0;
@@ -101,25 +103,36 @@ public:
 class SunSky : public Sun
 {
 public:
-	static inline int const MaxFallTime = 263 * 2;
+	static inline int const MaxFallTime = 263;
 	static inline int const MinFallTime = 63;
 	static inline int const MinX = 75;
 	static inline int const MaxX = WINDOW_WIDTH - 75;
 
-	SunSky(int init_x, int init_y, int falltime, pGameWorld thisworld) : Sun(init_x, init_y, falltime, thisworld) {};
+	SunSky(int init_x, int init_y, int falltime, pGameWorld thisworld) : Sun(init_x, init_y, falltime, thisworld) { ; };
 
 	void Update();
 };
 
+class PlantSpot : public ObjectAffectWorld  // option<>
+{
+public:
+	static inline const int PlantSpotWidth = 60, PlantSpotHeight = 80;
 
-class Seed : public ObjectAffectSun
+	PlantSpot(int x, int y, pGameWorld thisworld) : ObjectAffectWorld(IMGID_NONE, x, y, LAYER_UI, PlantSpotWidth, PlantSpotHeight, ANIMID_NO_ANIMATION, thisworld) {};
+	virtual void OnClick();
+	virtual void Update() {};
+
+};
+
+
+class Seed : public ObjectAffectWorld
 {
 public:
 	static inline const int SeedXStart = 130, SeedXInterval = 60, SeedY = WINDOW_HEIGHT - 44, SeedWidth = 50, SeedHeight = 70;
 
-	Seed(ImageID imageID, int x_index, int price, int cooltime, pGameWorld thisworld) : ObjectAffectSun(imageID, SeedXStart + x_index * SeedXInterval,SeedY, LAYER_UI, SeedWidth, SeedHeight, ANIMID_NO_ANIMATION, thisworld), m_price(price), m_CoolTime(cooltime) {};
+	Seed(ImageID imageID, int x_index, int price, int cooltime, pGameWorld thisworld) : ObjectAffectWorld(imageID, SeedXStart + x_index * SeedXInterval,SeedY, LAYER_UI, SeedWidth, SeedHeight, ANIMID_NO_ANIMATION, thisworld), m_price(price), m_CoolTime(cooltime) {};
 
-	void OnClickTemplt();
+	void OnClickTemplt(FunctionName);
 
 	int GetCoolTime() { return m_CoolTime; };
 
@@ -135,7 +148,7 @@ public:
 
 	SunFlowerSeed(pGameWorld thisworld) : Seed(IMGID_SEED_SUNFLOWER, SunFlowerSeedPosition, SunFlowerSeedValue, SunFlowereedCoolTime, thisworld) {};
 	virtual void Update() {};
-	virtual void OnClick() { Seed::OnClickTemplt(); };
+	virtual void OnClick() { Seed::OnClickTemplt(FunctionName::PlantSunflower); };
 };
 
 class PeaSeed : public Seed
@@ -145,7 +158,7 @@ public:
 
 	PeaSeed(pGameWorld thisworld) : Seed(IMGID_SEED_PEASHOOTER, PeaSeedPosition, PeaSeedValue, PeaSeedCoolTime, thisworld) {};
 	virtual void Update() {};
-	virtual void OnClick() { Seed::OnClickTemplt(); };
+	virtual void OnClick() { Seed::OnClickTemplt(FunctionName::PlantPea); };
 
 };
 
@@ -156,7 +169,7 @@ public:
 
 	WallnutSeed(pGameWorld thisworld) : Seed(IMGID_SEED_WALLNUT,WallnutSeedPosition, WallnutSeedValue, WallnutSeedCoolTime, thisworld) {};
 	virtual void Update() {};
-	virtual void OnClick() { Seed::OnClickTemplt(); };
+	virtual void OnClick() { Seed::OnClickTemplt(FunctionName::PlantWallnut); };
 
 };
 
@@ -167,7 +180,7 @@ public:
 
 	CherrySeed(pGameWorld thisworld) : Seed(IMGID_SEED_CHERRY_BOMB, CherrySeedPosition, CherrySeedValue, CherrySeedCoolTime, thisworld) {};
 	virtual void Update() {};
-	virtual void OnClick() { Seed::OnClickTemplt(); };
+	virtual void OnClick() { Seed::OnClickTemplt(FunctionName::PlantCherry); };
 
 };
 
@@ -178,7 +191,7 @@ public:
 
 	RepeaterSeed(pGameWorld thisworld) : Seed(IMGID_SEED_REPEATER, RepeaterSeedPosition, RepeaterSeedValue, RepeaterSeedCoolTime, thisworld) {};
 	virtual void Update() {};
-	virtual void OnClick() { Seed::OnClickTemplt(); };
+	virtual void OnClick() { Seed::OnClickTemplt(FunctionName::PlantRepeater); };
 
 };
 
@@ -198,14 +211,57 @@ private:
 };
 
 
-class PlantSpot : public GameObject
+
+class Plant : public ObjectAffectWorld
 {
 public:
-	static inline const int PlantSpotWidth = 60, PlantSpotHeight = 80;
+	static inline const int PlantWidth = 60, PlandHeight = 80;
+	
+	Plant(ImageID imageID, int x, int y, int HP, pGameWorld thisworld) : ObjectAffectWorld(imageID, x, y, LAYER_PLANTS, PlantWidth, PlandHeight, ANIMID_IDLE_ANIM, thisworld), m_HP(HP) {};
+	virtual void Update() = 0;
+	virtual void OnClick() = 0;
 
-	PlantSpot(int x, int y) : GameObject(IMGID_NONE, x, y, LAYER_UI, PlantSpotWidth, PlantSpotHeight, ANIMID_NO_ANIMATION, ObjectType::ConditionInteract) {};
-	virtual void Update() {};
-	virtual void OnClock();
+
+private:
+	int m_HP;
+};
+
+class SunFlower : public Plant
+{
+public:
+	static inline const int SunFlowerHP = 300, SunFlowerInterval = 600;
+
+	SunFlower(int x, int y, pGameWorld thisworld) : Plant(IMGID_SUNFLOWER, x, y, SunFlowerHP, thisworld) {};
+	virtual void Update();
+	virtual void OnClick() { Plant::OnClick(); };
+
+private:
+	int m_CoolTime{randInt(30, 600)};
+};
+
+class Peashooter : public Plant
+{
+public:
+	static inline const int PeashooterHP = 300, PeashooterInterval = 30, PeaCreateOffsetX = 30, PeaCreateOffsetY = 20;
+
+	Peashooter(int x, int y, pGameWorld thisworld) : Plant(IMGID_PEASHOOTER, x, y, PeashooterHP, thisworld) {};
+
+	virtual void Update();
+	virtual void OnClick() {};
+
+private:
+	int m_CoolTime{0};
+};
+
+class Pea : public ObjectAffectWorld
+{
+public :
+	static inline const int PeaWidth = 28, PeaHeight = 28, PeaDamage = 20;
+
+	Pea(int x, int y, pGameWorld thisworld) : ObjectAffectWorld(IMGID_PEA, x, y, LAYER_PROJECTILES, PeaWidth, PeaHeight, ANIMID_NO_ANIMATION, thisworld) {};
+
+	virtual void Update();
+	virtual void OnClick() {};
 
 };
 
