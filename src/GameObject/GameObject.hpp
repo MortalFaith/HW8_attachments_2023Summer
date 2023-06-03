@@ -11,7 +11,7 @@ enum class FunctionName;
 class GameWorld;
 using pGameWorld = std::shared_ptr<GameWorld>;
 
-
+//666
 class GameObject : public ObjectBase, public std::enable_shared_from_this<GameObject> {
 public:
   using std::enable_shared_from_this<GameObject>::shared_from_this; // Use shared_from_this() instead of "this".
