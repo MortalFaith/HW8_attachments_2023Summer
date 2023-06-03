@@ -77,6 +77,7 @@ public:
 	static inline int const SunHeight = 80;
 	static inline int const FallFlower = 12;
 	static inline int const SunValue = 25;
+	static inline int const VanishTime = -300 + 1;
 
 	Sun(int init_x, int init_y, int falltime, pGameWorld thisworld) : ObjectAffectWorld(IMGID_SUN, init_x, init_y, LAYER_SUN, SunWidth, SunHeight, ANIMID_IDLE_ANIM, thisworld), m_falltime(falltime) {};
 	virtual ~Sun() = default;
@@ -124,6 +125,17 @@ public:
 
 };
 
+class Shovel : public ObjectAffectWorld
+{
+public:
+	static inline const int ShovelX = 600, ShovelY = (WINDOW_HEIGHT - 40), ShovelWidth = 50, ShovelHeight = 50;
+
+	Shovel(pGameWorld thisworld) : ObjectAffectWorld(IMGID_SHOVEL, ShovelX, ShovelY, LAYER_UI, ShovelWidth, ShovelHeight, ANIMID_NO_ANIMATION, thisworld) {};
+
+	virtual void Update() {};
+	virtual void OnClick() ;
+
+};
 
 class Seed : public ObjectAffectWorld
 {
@@ -195,19 +207,20 @@ public:
 
 };
 
-class CoolDown : public GameObject
+class CoolDown : public ObjectAffectWorld
 {
 public:
 	static inline const int CoolDownWidth = 50, CoolDownHeight = 70;
 
-	CoolDown(int x, int y, int cooltime) : GameObject(IMGID_COOLDOWN_MASK, x, y, LAYER_COOLDOWN_MASK, CoolDownWidth, CoolDownHeight, ANIMID_NO_ANIMATION, ObjectType::NoInteract), m_cooltime(cooltime) {};
+	CoolDown(int x, int y, int cooltime, FunctionName covered, int price, pGameWorld thisworld) : ObjectAffectWorld(IMGID_COOLDOWN_MASK, x, y, LAYER_COOLDOWN_MASK, CoolDownWidth, CoolDownHeight, ANIMID_NO_ANIMATION, thisworld), m_cooltime(cooltime),m_CoveredPrice(price), m_covered(covered) {};
 
 	virtual void Update();
-
-	virtual void OnClick() {};
+	virtual void OnClick();
 
 private:
 	int m_cooltime;
+	FunctionName m_covered;
+	int m_CoveredPrice;
 };
 
 
@@ -222,7 +235,7 @@ public:
 	virtual void OnClick() = 0;
 
 
-private:
+protected:
 	int m_HP;
 };
 
@@ -247,7 +260,7 @@ public:
 	Peashooter(int x, int y, pGameWorld thisworld) : Plant(IMGID_PEASHOOTER, x, y, PeashooterHP, thisworld) {};
 
 	virtual void Update();
-	virtual void OnClick() {};
+	virtual void OnClick() { Plant::OnClick(); };
 
 private:
 	int m_CoolTime{0};
@@ -263,6 +276,65 @@ public :
 	virtual void Update();
 	virtual void OnClick() {};
 
+};
+
+
+class Wallnut : public Plant
+{
+public:
+	static inline const int WallnutHP = 3000, WallnutChangeHP = 1000;
+
+	Wallnut(int x, int y, pGameWorld thisworld) : Plant(IMGID_WALLNUT, x, y, WallnutHP, thisworld) {};
+
+	virtual void Update();
+	virtual void OnClick() { Plant::OnClick(); };
+
+private:
+	bool m_isCracked{false};
+};
+
+class Cherry : public Plant
+{
+public:
+	static inline const int CherryHP = 4000, CherryBoomTime = 15;
+
+	Cherry(int x, int y, pGameWorld thisworld) : Plant(IMGID_CHERRY_BOMB, x, y, CherryHP, thisworld) {};
+
+	virtual void Update();
+	virtual void OnClick() { Plant::OnClick(); };
+
+private:
+	int m_BoomTime{CherryBoomTime};
+
+};
+
+class Boom : public ObjectAffectWorld
+{
+public:
+	static inline const int BoomTime = 3, BoomWidth = 3 * LAWN_GRID_WIDTH, BoomHeight = 3 * LAWN_GRID_HEIGHT;
+
+	Boom(int x, int y, pGameWorld thisworld) : ObjectAffectWorld(IMGID_EXPLOSION, x, y, LAYER_PROJECTILES, BoomWidth, BoomHeight, ANIMID_NO_ANIMATION, thisworld) {};
+
+	virtual void Update();
+	virtual void OnClick() {};
+
+private:
+	int m_time{BoomTime};
+};
+
+
+class Repeater : public Plant
+{
+public:
+	static inline const int RepeaterHP = 300, RepeaterInterval = 25, PeaInterval = -5, RepeaterOffsetX = 30, RepeaterOffsetY = 20;
+
+	Repeater(int x, int y, pGameWorld thisworld) : Plant(IMGID_REPEATER, x, y, RepeaterHP, thisworld) {};
+
+	virtual void Update();
+	virtual void OnClick() { Plant::OnClick(); };
+
+private:
+	int m_ShootCoolTime{0};
 };
 
 #endif // !GAMEOBJECT_HPP__
