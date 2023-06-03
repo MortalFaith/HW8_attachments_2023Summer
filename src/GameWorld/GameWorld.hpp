@@ -32,7 +32,7 @@ public:
 	static inline int const SunStartCount = 180;
 	static inline int const SunCountInterval = 300;
 	static inline int const InitSun = 50;
-	static inline int const InitWave = 50;
+	static inline int const InitWave = 0;
 
   GameWorld();
   virtual ~GameWorld();
