@@ -11,7 +11,7 @@ enum class FunctionName;
 class GameWorld;
 using pGameWorld = std::shared_ptr<GameWorld>;
 
-//666
+
 class GameObject : public ObjectBase, public std::enable_shared_from_this<GameObject> {
 public:
   using std::enable_shared_from_this<GameObject>::shared_from_this; // Use shared_from_this() instead of "this".
@@ -75,8 +75,8 @@ class Sun : public ObjectAffectWorld  // abstract
 public:
 	static inline int const SunWidth = 80;
 	static inline int const SunHeight = 80;
-	static inline int const FallFlower = 12;
 	static inline int const SunValue = 25;
+	static inline int const FallTimeFlower = 12;
 
 	Sun(int init_x, int init_y, int falltime, pGameWorld thisworld) : ObjectAffectWorld(IMGID_SUN, init_x, init_y, LAYER_SUN, SunWidth, SunHeight, ANIMID_IDLE_ANIM, thisworld), m_falltime(falltime) {};
 	virtual ~Sun() = default;
@@ -93,7 +93,7 @@ class SunOfFlower : public Sun
 {
 public:
 
-	SunOfFlower(int init_x, int init_y, pGameWorld thisworld) : Sun(init_x, init_y, FallFlower, thisworld) {};
+	SunOfFlower(int init_x, int init_y, pGameWorld thisworld) : Sun(init_x, init_y, FallTimeFlower, thisworld) {};
 	~SunOfFlower() = default;
 
 	void Update();
