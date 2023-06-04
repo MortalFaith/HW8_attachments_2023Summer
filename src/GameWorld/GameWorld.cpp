@@ -49,8 +49,7 @@ LevelStatus GameWorld::Update() {
 	m_ZombieCountDown--;
 	if (m_ZombieCountDown == 0)
 	{
-		
-		m_ZombieCountDown = 150 /*> 600 - 20 * NowWave ? 150 : 600 - 20 * NowWave*/;
+		m_ZombieCountDown = 150 > 600 - 20 * GetWave() ? 150 : 600 - 20 * GetWave();
 		m_ZombieCountDown /= 1;
 		//NOTICE! "/10" is used for test!!!
 		int ZombieNum = (15 + GetWave()) / 10;
