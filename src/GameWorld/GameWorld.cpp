@@ -55,11 +55,11 @@ void GameWorld::CleanUp() {
 	m_objects.clear();
 }
 
-bool GameWorld::existZombie(int y)
+bool GameWorld::existZombie(int x, int y)
 {
 	for (auto item = m_objects.begin(); item != m_objects.end(); item++)
 	{
-		if (y == (*item)->GetY() && (*item)->GetType() == GameObject::ObjectType::Zombie)
+		if (y == (*item)->GetY() && (*item)->GetType() == GameObject::ObjectType::Zombie && ((*item)->GetX() + (*item)->GetWidth() / 2) > x)
 		{
 			return true;
 		}

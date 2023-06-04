@@ -166,7 +166,7 @@ void Peashooter::Update()
 	}
 	else
 	{
-		if (m_world->existZombie(GetY()) == true)
+		if (m_world->existZombie(GetX(), GetY()) == true)
 		{
 			m_world->AddObject(std::make_shared<Pea>(GetX()+ PeaCreateOffsetX, GetY() + PeaCreateOffsetY, m_world));
 			m_CoolTime = PeashooterInterval;
@@ -227,7 +227,7 @@ void Repeater::Update()
 	{
 		m_ShootCoolTime--;
 	}
-	else if(m_ShootCoolTime == 0 && m_world->existZombie(GetY()))
+	else if(m_ShootCoolTime == 0 && m_world->existZombie(GetX(), GetY()))
 	{
 		m_world->AddObject(std::make_shared<Pea>(GetX() + RepeaterOffsetX, GetY() + RepeaterOffsetY, m_world));
 		m_ShootCoolTime--;
