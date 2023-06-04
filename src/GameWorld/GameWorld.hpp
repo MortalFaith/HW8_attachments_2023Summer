@@ -3,8 +3,7 @@
 
 #include <list>
 #include <memory>
-#include <random>
-
+#include<optional>
 #include "WorldBase.hpp"
 #include "utils.hpp"
 
@@ -33,7 +32,7 @@ public:
 	static inline int const SunStartCount = 180;
 	static inline int const SunCountInterval = 300;
 	static inline int const InitSun = 5000;
-	static inline int const InitWave = 10;
+	static inline int const InitWave = 0;
 
   GameWorld();
   virtual ~GameWorld();
@@ -50,6 +49,7 @@ public:
   void SetFunction(FunctionName functionname) { m_function = functionname; };
 
   bool existZombie(int x, int y); //{ return true; };
+  std::optional<const Plant> isCollidedForZombie(Zombie& zombie);
 
 private: 
 

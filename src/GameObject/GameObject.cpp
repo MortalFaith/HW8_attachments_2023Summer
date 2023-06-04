@@ -69,7 +69,7 @@ void PlantSpot::OnClick()
 		break;
 
 	case FunctionName::TestZombie:
-		m_world->AddObject(std::make_shared<RegularZombie>(GetX(), GetY(), m_world));
+		m_world->AddObject(std::make_shared<BucketZombie>(GetX(), GetY(), m_world));
 		break;
 
 	default:
@@ -253,6 +253,26 @@ void Zombie::Update()
 		ChangeStatus();
 		return;
 	}
+	else if(auto collided = std::move(m_world->isCollidedForZombie(*this)); collided != std::nullopt)
+	{
+		PlayAnimation(ANIMID_EAT_ANIM);
+		collided.value()->
+	}
 	MoveTo(GetX() - m_speed, GetY());
+}
 
+
+
+void BucketZombie::Update()
+{
+	Zombie::Update();
+	if (m_HP <= ZombieHP)
+	{
+		ChangeImage(IMGID_REGULAR_ZOMBIE);
+	}
+}
+
+void PoleZombie::Update()
+{
+	Zombie::Update();
 }

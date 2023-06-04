@@ -40,6 +40,9 @@ public:
 
   ObjectType GetType() { return m_type; };
 
+  int GetLetfEdge() { return GetX() - GetWidth() / 2; };
+  int GetRightEdge() { return GetX() + GetWidth() / 2; };
+
 private:
 
 	Status m_status{ Status::Alive };
@@ -279,12 +282,20 @@ private:
 	int m_CoolTime{0};
 };
 
-class Pea : public ObjectAffectWorld
+class PlantAttack : public ObjectAffectWorld
+{
+public:
+	PlantAttack(ImageID imgID, int x, int y, int width, int height, pGameWorld thisworld) : ObjectAffectWorld(imgID, x, y, LAYER_PROJECTILES, width, height, ANIMID_NO_ANIMATION, thisworld, ObjectType::PlantAttack) {};
+	virtual void Attack() = 0;
+
+};
+
+class Pea : public PlantAttack
 {
 public :
 	static inline const int PeaWidth = 28, PeaHeight = 28, PeaDamage = 20;
 
-	Pea(int x, int y, pGameWorld thisworld) : ObjectAffectWorld(IMGID_PEA, x, y, LAYER_PROJECTILES, PeaWidth, PeaHeight, ANIMID_NO_ANIMATION, thisworld, ObjectType::PlantAttack) {};
+	Pea(int x, int y, pGameWorld thisworld) : PlantAttack(IMGID_PEA, x, y, PeaWidth, PeaHeight, thisworld) {};
 
 	virtual void Update();
 	virtual void OnClick() {};
@@ -361,8 +372,8 @@ public:
 	virtual void Update();
 	virtual void OnClick() {};
 
-	int GetHP() { return m_HP; };
-	void SetHP(int HP) { m_HP = HP; };
+	//int GetHP() { return m_HP; };
+	//void SetHP(int HP) { m_HP = HP; };
 
 protected:
 	int m_HP;
@@ -379,6 +390,28 @@ public:
 	virtual void Update() { Zombie::Update(); };
 	virtual void OnClick() {};
 
+};
+
+class BucketZombie : public Zombie
+{
+public:
+	static inline const int BucketZombieHP = 1300, ZombieHP = 200, BucketZombieSpeed = 1;
+
+	BucketZombie(int x, int y, pGameWorld thisworld) : Zombie(IMGID_BUCKET_HEAD_ZOMBIE, x,y, BucketZombieHP, BucketZombieSpeed,ANIMID_WALK_ANIM ,thisworld) {};
+
+	virtual void Update();
+	virtual void OnClick() {};
+};
+
+class PoleZombie : public Zombie
+{
+public :
+	static inline const int PoleZombieHP = 340, PoleZombieRunSpeed = 2, PoleZombieWalkSpeed = 1, JumpTestX = 40;
+
+	PoleZombie(int x, int y, pGameWorld thisworld) : Zombie(IMGID_POLE_VAULTING_ZOMBIE, x, y, PoleZombieHP, PoleZombieRunSpeed, ANIMID_RUN_ANIM, thisworld) {};
+
+	virtual void Update();
+	virtual void OnClick() {};
 };
 
 #endif // !GAMEOBJECT_HPP__

@@ -67,3 +67,20 @@ bool GameWorld::existZombie(int x, int y)
 	return false;
 }
 
+std::optional<const Plant> GameWorld::isCollidedForZombie(Zombie& zombie)
+{
+	for (auto item = m_objects.begin(); item != m_objects.end(); item++)
+	{
+		if ((*item)->GetY() == zombie.GetY())
+		{
+			if ((*item)->GetType() == GameObject::ObjectType::Plant)
+			{
+				if (zombie.GetLetfEdge() < (*item)->GetRightEdge() && zombie.GetRightEdge() > (*item)->GetLetfEdge())
+				{
+					return ;
+				}
+			}
+		}
+	}
+	return std::nullopt;
+}
