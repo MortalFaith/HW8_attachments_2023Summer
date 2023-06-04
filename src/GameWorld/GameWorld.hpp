@@ -32,7 +32,7 @@ public:
 	static inline int const SunStartCount = 180;
 	static inline int const SunCountInterval = 300;
 	static inline int const InitSun = 50;
-	static inline int const InitWave = 50;
+	static inline int const InitWave = 8;
 	static inline int const ZombieStartCount = 120;
 
   GameWorld();
@@ -56,7 +56,6 @@ private:
 	std::list<pGameObject> m_objects{};
 	unsigned int m_SunCountDown{ SunStartCount };
 	unsigned int m_ZombieCountDown{ ZombieStartCount };
-	int m_Wave{ InitWave };
 	FunctionName m_function{ FunctionName::None };
 };
 

@@ -156,10 +156,14 @@ void Zombie::OnClick()
 	return;
 }
 
-void Zombie::Collapse()
+void Zombie::Collide()
 {
 	//TODO
 	return;
+}
+
+int Zombie::Getm_HP() const {
+	return m_HP;
 }
 
 void Regular_Zombie::Update()
@@ -168,8 +172,32 @@ void Regular_Zombie::Update()
 	MoveTo(GetX() - 1, GetY());
 }
 
-void Regular_Zombie::Collapse()
+void Regular_Zombie::Collide()
 {
-	Zombie::Collapse();
+	Zombie::Collide();
 }
 
+void Bucket_Head_Zombie::Update()
+{
+	Zombie::Update();
+	MoveTo(GetX() - 1, GetY());
+	if (Getm_HP() < 200) {
+		ChangeImage(IMGID_REGULAR_ZOMBIE);
+	}
+}
+
+void Bucket_Head_Zombie::Collide()
+{
+	Zombie::Collide();
+}
+
+void Pole_Vaulting_Zombie::Update()
+{
+	Zombie::Update();
+	MoveTo(GetX() - 1, GetY());
+}
+
+void Pole_Vaulting_Zombie::Collide()
+{
+	Zombie::Collide();
+}

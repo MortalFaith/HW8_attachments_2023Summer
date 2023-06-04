@@ -21,8 +21,8 @@ void GameWorld::Init() {
 	{
 		for (int j = 0; j < GAME_COLS; j++)
 		{
-			//m_objects.emplace_front(std::make_shared<PlantSpot>(FIRST_COL_CENTER + LAWN_GRID_WIDTH * j, FIRST_ROW_CENTER + LAWN_GRID_HEIGHT * i,shared_from_this()));
-			m_objects.emplace_front(std::make_shared<SunFlower>(FIRST_COL_CENTER + LAWN_GRID_WIDTH * j, FIRST_ROW_CENTER + LAWN_GRID_HEIGHT * i,shared_from_this()));
+			m_objects.emplace_front(std::make_shared<PlantSpot>(FIRST_COL_CENTER + LAWN_GRID_WIDTH * j, FIRST_ROW_CENTER + LAWN_GRID_HEIGHT * i,shared_from_this()));
+			//m_objects.emplace_front(std::make_shared<SunFlower>(FIRST_COL_CENTER + LAWN_GRID_WIDTH * j, FIRST_ROW_CENTER + LAWN_GRID_HEIGHT * i,shared_from_this()));
 		}
 	}
 }
@@ -49,20 +49,32 @@ LevelStatus GameWorld::Update() {
 	m_ZombieCountDown--;
 	if (m_ZombieCountDown == 0)
 	{
-		m_ZombieCountDown = 150 > 600 - 20 * m_Wave ? 150 : 600 - 20 * m_Wave;
-		static int ZombieNum = (15 + m_Wave) / 10;
 		
+		m_ZombieCountDown = 150 /*> 600 - 20 * NowWave ? 150 : 600 - 20 * NowWave*/;
+		m_ZombieCountDown /= 1;
+		//NOTICE! "/10" is used for test!!!
+		int ZombieNum = (15 + GetWave()) / 10;
+		//NOTICE! "*10" is used for test!!!
+		
+		static int const ProbabilityRegular_Zombie = 20;
+		int ProbabilityPole_Vaulting_Zombie = 2 * (GetWave() - 8 > 0 ? GetWave() - 8 : 0);
+		int ProbabilityBucket_Head_Zombie = 3 * (GetWave() - 15 > 0 ? GetWave() - 15 : 0);
+
 		while (ZombieNum > 0) {
 			ZombieNum--;
-
-			static int const ProbabilityRegular_Zombie = 20;
-			static int ProbabilityPole_Vaulting_Zombie = 2 * (m_Wave - 8 > 0 ? m_Wave - 8 : 0);
-			static int ProbabilityBucket_Head_Zombie = 3 * (m_Wave - 15 > 0 ? m_Wave - 15 : 0);
 			
-			//TODO: calculate possibility of each zombie.
-
-			m_objects.emplace_front(std::make_shared<Regular_Zombie>(randInt(Regular_Zombie::MinX, Regular_Zombie::MaxX), Regular_Zombie::PossibleY[randInt(0,0)], shared_from_this()));
+			int m_Probability = randInt(0, ProbabilityRegular_Zombie + ProbabilityPole_Vaulting_Zombie + ProbabilityBucket_Head_Zombie);
+			if (m_Probability < ProbabilityRegular_Zombie) {
+				m_objects.emplace_front(std::make_shared<Regular_Zombie>(randInt(Zombie::MinX, Zombie::MaxX), Zombie::PossibleY[randInt(0, 4)], shared_from_this()));
+			}
+			else if (m_Probability < ProbabilityRegular_Zombie + ProbabilityPole_Vaulting_Zombie) {
+				m_objects.emplace_front(std::make_shared<Pole_Vaulting_Zombie>(randInt(Zombie::MinX, Zombie::MaxX), Zombie::PossibleY[randInt(0, 4)], shared_from_this()));
+			}
+			else {
+				m_objects.emplace_front(std::make_shared<Bucket_Head_Zombie>(randInt(Zombie::MinX, Zombie::MaxX), Zombie::PossibleY[randInt(0, 4)], shared_from_this()));
+			}
 		}
+		SetWave(GetWave()+1);
 	}
 
   return LevelStatus::ONGOING;

@@ -273,14 +273,14 @@ public:
 	static inline const int ZombieWidth = 20, ZombieHeight = 80;
 	static inline int const MinX = WINDOW_WIDTH - 40;
 	static inline int const MaxX = WINDOW_WIDTH - 1;
-	static inline int const PossibleY[1] = { 75 };
+	static inline int const PossibleY[5] = { 75, 175, 275, 375, 475 };
 	//TODO: calculate the possible Y of spawn of Zombies.
 
 	Zombie(ImageID imageID, int x, int y, int HP, pGameWorld thisworld) : ObjectAffectWorld(imageID, x, y, LAYER_ZOMBIES, ZombieWidth, ZombieHeight, ANIMID_WALK_ANIM, thisworld), m_HP(HP) {};
 	virtual void Update() = 0;
 	virtual void OnClick() = 0;
-	virtual void Collapse() = 0;
-
+	virtual void Collide() = 0;
+	int Getm_HP() const;
 
 private:
 	int m_HP;
@@ -295,6 +295,30 @@ public:
 	
 	virtual void Update();
 	virtual void OnClick() {};
-	virtual void Collapse();
+	virtual void Collide();
+};
+
+class Bucket_Head_Zombie : public Zombie
+{
+public:
+	static inline const int Bucket_Head_ZombieHP = 1300;
+
+	Bucket_Head_Zombie(int x, int y, pGameWorld thisworld) : Zombie(IMGID_BUCKET_HEAD_ZOMBIE, x, y, Bucket_Head_ZombieHP, thisworld) {};
+
+	virtual void Update();
+	virtual void OnClick() {};
+	virtual void Collide();
+};
+
+class Pole_Vaulting_Zombie : public Zombie
+{
+public:
+	static inline const int Pole_Vaulting_ZombieHP = 340;
+
+	Pole_Vaulting_Zombie(int x, int y, pGameWorld thisworld) : Zombie(IMGID_POLE_VAULTING_ZOMBIE, x, y, Pole_Vaulting_ZombieHP, thisworld) {};
+
+	virtual void Update();
+	virtual void OnClick() {};
+	virtual void Collide();
 };
 #endif // !GAMEOBJECT_HPP__
