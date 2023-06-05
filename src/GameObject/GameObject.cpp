@@ -100,6 +100,10 @@ void Plant::OnClick()
 	return;
 }
 
+int Plant::Getm_HP() const {
+	return m_HP;
+}
+
 void SunFlower::Update()
 {
 	Plant::Update();
@@ -123,7 +127,7 @@ void Peashooter::Update()
 	}
 	else
 	{
-		if (m_world->existZombie(GetY()) == true)
+		if (m_world->existZombie(GetX(),GetY()) == true)
 		{
 			m_world->AddObject(std::make_shared<Pea>(GetX()+ PeaCreateOffsetX, GetY() + PeaCreateOffsetY, m_world));
 			m_CoolTime = PeashooterInterval;
@@ -151,11 +155,6 @@ void Zombie::Update()
 	}
 }
 
-void Zombie::OnClick()
-{
-	return;
-}
-
 void Zombie::Collide()
 {
 	//TODO
@@ -175,6 +174,11 @@ void Regular_Zombie::Update()
 void Regular_Zombie::Collide()
 {
 	Zombie::Collide();
+}
+
+std::shared_ptr<Regular_Zombie> Regular_Zombie::GetClassType()
+{
+	return std::make_shared<Regular_Zombie>(shared_from_this());
 }
 
 void Bucket_Head_Zombie::Update()

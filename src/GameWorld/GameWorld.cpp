@@ -61,7 +61,6 @@ LevelStatus GameWorld::Update() {
 
 		while (ZombieNum > 0) {
 			ZombieNum--;
-			
 			int m_Probability = randInt(0, ProbabilityRegular_Zombie + ProbabilityPole_Vaulting_Zombie + ProbabilityBucket_Head_Zombie);
 			if (m_Probability < ProbabilityRegular_Zombie) {
 				m_objects.emplace_front(std::make_shared<Regular_Zombie>(randInt(Zombie::MinX, Zombie::MaxX), Zombie::PossibleY[randInt(0, 4)], shared_from_this()));

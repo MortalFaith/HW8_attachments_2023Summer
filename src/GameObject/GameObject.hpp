@@ -121,7 +121,6 @@ public:
 	PlantSpot(int x, int y, pGameWorld thisworld) : ObjectAffectWorld(IMGID_NONE, x, y, LAYER_UI, PlantSpotWidth, PlantSpotHeight, ANIMID_NO_ANIMATION, thisworld) {};
 	virtual void OnClick();
 	virtual void Update() {};
-
 };
 
 
@@ -220,7 +219,7 @@ public:
 	Plant(ImageID imageID, int x, int y, int HP, pGameWorld thisworld) : ObjectAffectWorld(imageID, x, y, LAYER_PLANTS, PlantWidth, PlandHeight, ANIMID_IDLE_ANIM, thisworld), m_HP(HP) {};
 	virtual void Update() = 0;
 	virtual void OnClick() = 0;
-
+	virtual int Getm_HP() const;
 
 private:
 	int m_HP;
@@ -234,6 +233,7 @@ public:
 	SunFlower(int x, int y, pGameWorld thisworld) : Plant(IMGID_SUNFLOWER, x, y, SunFlowerHP, thisworld) {};
 	virtual void Update();
 	virtual void OnClick() { Plant::OnClick(); };
+	//Why: 在virtual void里写函数有用吗？
 
 private:
 	int m_CoolTime{randInt(30, 600)};
@@ -265,6 +265,17 @@ public :
 
 };
 
+class Wallnut : public Plant
+{
+public:
+	static inline const int WallnutHP = 300;
+
+	Wallnut(int x, int y, pGameWorld thisworld) : Plant(IMGID_SUNFLOWER, x, y, WallnutHP, thisworld) {};
+	virtual void Update();
+	virtual void OnClick() {};
+
+};
+
 
 
 class Zombie : public ObjectAffectWorld
@@ -278,7 +289,6 @@ public:
 
 	Zombie(ImageID imageID, int x, int y, int HP, pGameWorld thisworld) : ObjectAffectWorld(imageID, x, y, LAYER_ZOMBIES, ZombieWidth, ZombieHeight, ANIMID_WALK_ANIM, thisworld), m_HP(HP) {};
 	virtual void Update() = 0;
-	virtual void OnClick() = 0;
 	virtual void Collide() = 0;
 	int Getm_HP() const;
 
@@ -294,7 +304,6 @@ public:
 	Regular_Zombie(int x, int y, pGameWorld thisworld) : Zombie(IMGID_REGULAR_ZOMBIE, x, y, Regular_ZombieHP, thisworld) {};
 	
 	virtual void Update();
-	virtual void OnClick() {};
 	virtual void Collide();
 };
 
@@ -306,7 +315,6 @@ public:
 	Bucket_Head_Zombie(int x, int y, pGameWorld thisworld) : Zombie(IMGID_BUCKET_HEAD_ZOMBIE, x, y, Bucket_Head_ZombieHP, thisworld) {};
 
 	virtual void Update();
-	virtual void OnClick() {};
 	virtual void Collide();
 };
 
@@ -318,7 +326,6 @@ public:
 	Pole_Vaulting_Zombie(int x, int y, pGameWorld thisworld) : Zombie(IMGID_POLE_VAULTING_ZOMBIE, x, y, Pole_Vaulting_ZombieHP, thisworld) {};
 
 	virtual void Update();
-	virtual void OnClick() {};
 	virtual void Collide();
 };
 #endif // !GAMEOBJECT_HPP__
