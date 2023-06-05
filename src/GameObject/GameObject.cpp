@@ -173,6 +173,11 @@ void Regular_Zombie::Collide()
 	Zombie::Collide();
 }
 
+std::shared_ptr<Regular_Zombie> Regular_Zombie::GetClassType()
+{
+	return std::make_shared<Regular_Zombie>(shared_from_this());
+}
+
 void Bucket_Head_Zombie::Update()
 {
 	Zombie::Update();

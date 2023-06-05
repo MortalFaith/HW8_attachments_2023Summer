@@ -48,7 +48,12 @@ public:
 
   FunctionName GetFunction() { return m_function; };
   void SetFunction(FunctionName functionname) { m_function = functionname; };
+<<<<<<< HEAD
   bool existZombie(int x, int y) { return true; };
+=======
+  
+  bool existZombie(int x, int y) {};
+>>>>>>> e4835511c521a865fd3e56d5574bccaca28f7df4
 
 private: 
 
