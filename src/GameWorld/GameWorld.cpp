@@ -31,6 +31,14 @@ void GameWorld::Init() {
 
 LevelStatus GameWorld::Update() {
   // YOUR CODE HERE
+	m_SunCountDown--;
+	if (m_SunCountDown == 0)
+	{
+		m_SunCountDown = SunCountInterval;
+
+		m_objects.emplace_front(std::make_shared<SunSky>(randInt(SunSky::MinX, SunSky::MaxX), WINDOW_HEIGHT - 1, randInt(SunSky::MinFallTime, SunSky::MaxFallTime), shared_from_this()));
+	}
+
 	for (auto item = m_objects.begin(); item != m_objects.end(); item ++)
 	{
 		(*item)->Update();
@@ -39,13 +47,30 @@ LevelStatus GameWorld::Update() {
 			item = m_objects.erase(item);
 		}
 	}
-	m_SunCountDown--;
-	if (m_SunCountDown == 0)
+	for (auto item = m_objects.begin(); item != m_objects.end(); item++)
 	{
-		m_SunCountDown = SunCountInterval;
-
-		m_objects.emplace_front(std::make_shared<SunSky>(randInt(SunSky::MinX, SunSky::MaxX), WINDOW_HEIGHT - 1, randInt(SunSky::MinFallTime, SunSky::MaxFallTime),shared_from_this()));
+		if (GameObject::ObjectType::Zombie == (*item)->GetType())
+		{
+			for (auto other = m_objects.begin(); other != m_objects.end(); other++)
+			{
+				if ((*other)->GetType() != GameObject::ObjectType::Others && (*other)->GetType() != GameObject::ObjectType::Zombie)
+				{
+					if (isCollide((*other), (*item)))
+					{
+						(*item)->addCollided((*other));
+						(*other)->addCollided((*item));
+					}
+				}
+			}
+		}
 	}
+
+	for (auto item = m_objects.begin(); item != m_objects.end(); item++)
+	{
+		(*item)->Colliding();
+	}
+
+
 
   return LevelStatus::ONGOING;
 }
@@ -67,20 +92,28 @@ bool GameWorld::existZombie(int x, int y)
 	return false;
 }
 
-std::optional<const Plant> GameWorld::isCollidedForZombie(Zombie& zombie)
+
+bool GameWorld::isCollide(pGameObject object1, pGameObject object2)
 {
-	for (auto item = m_objects.begin(); item != m_objects.end(); item++)
+	if (object1->GetX() <= object2->GetX())
 	{
-		if ((*item)->GetY() == zombie.GetY())
+		//std::cout << object1->GetRightEdge() - object2->GetLetfEdge();
+		//system("pause");
+		if (object1->GetRightEdge() > object2->GetLetfEdge() && object1->GetLetfEdge() < object2->GetRightEdge())
 		{
-			if ((*item)->GetType() == GameObject::ObjectType::Plant)
-			{
-				if (zombie.GetLetfEdge() < (*item)->GetRightEdge() && zombie.GetRightEdge() > (*item)->GetLetfEdge())
-				{
-					return ;
-				}
-			}
+		//	std::cout << "test true" << std::endl;
+			return true;
 		}
 	}
-	return std::nullopt;
+	else
+	{
+		if (object2->GetRightEdge() > object1->GetLetfEdge() && object2->GetLetfEdge() < object1->GetRightEdge())
+		{
+		//	std::cout << "test true" << std::endl;
+			return true;
+		}
+
+	}
+	//std::cout << "test false" << std::endl;
+	return false;
 }

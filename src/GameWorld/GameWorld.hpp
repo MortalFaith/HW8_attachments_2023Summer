@@ -31,7 +31,7 @@ public:
   // Use shared_from_this() instead of "this".
 	static inline int const SunStartCount = 180;
 	static inline int const SunCountInterval = 300;
-	static inline int const InitSun = 5000;
+	static inline int const InitSun = 500;
 	static inline int const InitWave = 0;
 
   GameWorld();
@@ -49,7 +49,7 @@ public:
   void SetFunction(FunctionName functionname) { m_function = functionname; };
 
   bool existZombie(int x, int y); //{ return true; };
-  std::optional<const Plant> isCollidedForZombie(Zombie& zombie);
+  bool isCollide(pGameObject left, pGameObject right);
 
 private: 
 

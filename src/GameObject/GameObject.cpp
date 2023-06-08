@@ -2,6 +2,7 @@
 
 void Sun::Update()
 {
+	GameObject::Update();
 	if(!(m_falltime < VanishTime))
 	{
 		m_falltime--;
@@ -127,6 +128,7 @@ void CoolDown::OnClick()
 
 void Plant::Update()
 {
+	GameObject::Update();
 	if (m_HP <= 0)
 	{
 		ChangeStatus();
@@ -177,9 +179,18 @@ void Peashooter::Update()
 
 void Pea::Update()
 {
+	GameObject::Update();
 	int speed = 8;
 	MoveTo(GetX() + speed, GetY());
 	if (GetX() > WINDOW_WIDTH)
+	{
+		ChangeStatus();
+	}
+}
+
+void Pea::Colliding()
+{
+	if (!isCollideEmpty())
 	{
 		ChangeStatus();
 	}
@@ -211,6 +222,7 @@ void Cherry::Update()
 
 void Boom::Update()
 {
+	GameObject::Update();
 	if (m_time > 0)
 	{
 		m_time--;
@@ -248,17 +260,32 @@ void Repeater::Update()
 
 void Zombie::Update()
 {
+	GameObject::Update();
 	if (m_HP <= 0 || GetX() <= 0)
 	{
 		ChangeStatus();
 		return;
 	}
-	else if(auto collided = std::move(m_world->isCollidedForZombie(*this)); collided != std::nullopt)
+	MoveTo(GetX() - m_speed, GetY());
+	
+}
+
+void Zombie::Colliding()
+{
+	if (isCollideEmpty() && GetCurrentAnimation() != ANIMID_WALK_ANIM)
+	{
+		PlayAnimation(ANIMID_WALK_ANIM);
+	}
+	else if (!isCollideEmpty())
 	{
 		PlayAnimation(ANIMID_EAT_ANIM);
-		collided.value()->
+
+
+		for (auto item = collidedBegin(); item != collidedEnd(); item++)
+		{
+			m_HP -= (*item)->GetDamage();
+		}
 	}
-	MoveTo(GetX() - m_speed, GetY());
 }
 
 
