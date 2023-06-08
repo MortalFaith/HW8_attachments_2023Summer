@@ -42,7 +42,7 @@ public:
   virtual int GetDamage() { return 0; };
 
 //absolute position
-  virtual int GetLetfEdge() { return GetX() - GetWidth() / 2; }; 
+  virtual int GetLeftEdge() { return GetX() - GetWidth() / 2; }; 
 
 //absolute position
   virtual int GetRightEdge() { return GetX() + GetWidth() / 2; };
@@ -431,14 +431,19 @@ public:
 class PoleZombie : public Zombie
 {
 public :
-	static inline const int PoleZombieHP = 340, PoleZombieRunSpeed = 2, PoleZombieWalkSpeed = 1, JumpTestX = 40;
+	static inline const int PoleZombieHP = 340, PoleZombieRunSpeed = 2, PoleZombieWalkSpeed = 1, JumpTestX = 40, PoleZombieAnimPlaytime = 42, PoleZombieJumpX = 150;;
 
 	PoleZombie(int x, int y, pGameWorld thisworld) : Zombie(IMGID_POLE_VAULTING_ZOMBIE, x, y, PoleZombieHP, PoleZombieRunSpeed, ANIMID_RUN_ANIM, thisworld) {};
 
 	virtual void Update();
 	virtual void OnClick() {};
-	virtual void Colliding() { Zombie::Colliding(PoleZombieRunSpeed); };
+	virtual void Colliding();
+	virtual int GetLeftEdge();
+	virtual int GetRightEdge();
 
+private :
+	bool m_isRunning{true};
+	int m_AnimPlayingtime{ PoleZombieAnimPlaytime };
 };
 
 #endif // !GAMEOBJECT_HPP__
