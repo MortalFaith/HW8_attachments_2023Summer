@@ -275,11 +275,12 @@ void Zombie::Colliding()
 	if (isCollideEmpty() && GetCurrentAnimation() != ANIMID_WALK_ANIM)
 	{
 		PlayAnimation(ANIMID_WALK_ANIM);
+		m_speed = 1;
 	}
 	else if (!isCollideEmpty())
 	{
 		PlayAnimation(ANIMID_EAT_ANIM);
-
+		m_speed = 0;
 
 		for (auto item = collidedBegin(); item != collidedEnd(); item++)
 		{
