@@ -247,6 +247,7 @@ void Boom::Update()
 
 void Repeater::Update()
 {
+	Plant::Update();
 	if (m_ShootCoolTime > 0)
 	{
 		m_ShootCoolTime--;
