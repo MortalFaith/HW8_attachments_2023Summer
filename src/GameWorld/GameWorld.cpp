@@ -19,7 +19,7 @@ void GameWorld::Init() {
 	m_objects.emplace_front(std::make_shared<RepeaterSeed>(shared_from_this()));
 	m_objects.emplace_front(std::make_shared<Shovel>(shared_from_this()));
 
-	//m_objects.emplace_front(std::make_shared<ZombieSeed>(shared_from_this()));
+	m_objects.emplace_front(std::make_shared<ZombieSeed>(shared_from_this()));
 
 	for (int i = 0; i < GAME_ROWS; i++)
 	{
@@ -133,21 +133,24 @@ bool GameWorld::existZombie(int x, int y)
 
 
 bool GameWorld::isCollide(pGameObject object1, pGameObject object2)
-{
-	if (object1->GetX() <= object2->GetX())
+{	
+	if (object1->GetY() == object2->GetY())
 	{
-		if (object1->GetRightEdge() > object2->GetLetfEdge() && object1->GetLetfEdge() < object2->GetRightEdge())
+		if (object1->GetX() <= object2->GetX())
 		{
-			return true;
+			if (object1->GetRightEdge() > object2->GetLetfEdge() && object1->GetLetfEdge() < object2->GetRightEdge())
+			{
+				return true;
+			}
 		}
-	}
-	else
-	{
-		if (object2->GetRightEdge() > object1->GetLetfEdge() && object2->GetLetfEdge() < object1->GetRightEdge())
+		else
 		{
-			return true;
-		}
+			if (object2->GetRightEdge() > object1->GetLetfEdge() && object2->GetLetfEdge() < object1->GetRightEdge())
+			{
+				return true;
+			}
 
+		}
 	}
 	return false;
 }
