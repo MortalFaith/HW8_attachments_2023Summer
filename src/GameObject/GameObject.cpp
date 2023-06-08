@@ -334,9 +334,11 @@ void PoleZombie::Update()
 	else if(m_AnimPlayingtime != 0)
 	{
 		m_AnimPlayingtime--;
+		GameObject::Update();
 	}
 	else if(m_AnimPlayingtime == 0)
 	{
+		GameObject::Update();
 		m_speed = PoleZombieWalkSpeed;
 		m_isRunning = false;
 		m_AnimPlayingtime = PoleZombieAnimPlaytime;
