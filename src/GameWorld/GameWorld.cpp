@@ -55,6 +55,10 @@ LevelStatus GameWorld::Update() {
 	{
 		if (GameObject::ObjectType::Zombie == (*item)->GetType())
 		{
+			if ((*item)->GetX() <= 0)
+			{
+				return LevelStatus::LOSING;
+			}
 			for (auto other = m_objects.begin(); other != m_objects.end(); other++)
 			{
 				if ((*other)->GetType() != GameObject::ObjectType::Others && (*other)->GetType() != GameObject::ObjectType::Zombie)
