@@ -70,7 +70,7 @@ void PlantSpot::OnClick()
 		break;
 
 	case FunctionName::TestZombie:
-		m_world->AddObject(std::make_shared<BucketZombie>(GetX(), GetY(), m_world));
+		m_world->AddObject(std::make_shared<RegularZombie>(GetX(), GetY(), m_world));
 		break;
 
 	default:
@@ -142,6 +142,19 @@ void Plant::OnClick()
 	{
 		ChangeStatus();
 		m_world->SetFunction(FunctionName::None);
+	}
+}
+
+void Plant::Colliding()
+{
+	for (auto item = collidedBegin(); item != collidedEnd(); item++)
+	{
+		m_HP -= (*item)->GetDamage();
+		std::cout << m_HP << std::endl;
+		if (m_HP <= 0)
+		{
+			return;
+		}
 	}
 }
 
@@ -270,21 +283,33 @@ void Zombie::Update()
 	
 }
 
-void Zombie::Colliding()
+void Zombie::Colliding(int speed)
 {
 	if (isCollideEmpty() && GetCurrentAnimation() != ANIMID_WALK_ANIM)
 	{
 		PlayAnimation(ANIMID_WALK_ANIM);
-		m_speed = 1;
+		m_speed = speed;
 	}
 	else if (!isCollideEmpty())
 	{
-		PlayAnimation(ANIMID_EAT_ANIM);
-		m_speed = 0;
-
+		int num_plant = 0;
 		for (auto item = collidedBegin(); item != collidedEnd(); item++)
 		{
 			m_HP -= (*item)->GetDamage();
+			if (m_HP <= 0)
+			{
+				ChangeStatus();
+				return;
+			}
+			if ((*item)->GetType() == ObjectType::Plant)
+			{
+				num_plant++;
+			}
+		}
+		if (num_plant != 0 && GetCurrentAnimation() != ANIMID_EAT_ANIM)
+		{
+			PlayAnimation(ANIMID_EAT_ANIM);
+			m_speed = 0;
 		}
 	}
 }
@@ -294,7 +319,7 @@ void Zombie::Colliding()
 void BucketZombie::Update()
 {
 	Zombie::Update();
-	if (m_HP <= ZombieHP)
+	if (m_HP == ZombieHP)
 	{
 		ChangeImage(IMGID_REGULAR_ZOMBIE);
 	}
