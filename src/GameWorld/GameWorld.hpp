@@ -31,8 +31,9 @@ public:
   // Use shared_from_this() instead of "this".
 	static inline int const SunStartCount = 180;
 	static inline int const SunCountInterval = 300;
-	static inline int const InitSun = 5000;
+	static inline int const InitSun = 50;
 	static inline int const InitWave = 0;
+	static inline int const ZombieStartCount = 1200;
 
   GameWorld();
   virtual ~GameWorld();
@@ -57,6 +58,7 @@ private:
 
 	std::list<pGameObject> m_objects{};
 	unsigned int m_SunCountDown{ SunStartCount };
+	unsigned int m_ZombieCountDown{ ZombieStartCount };
 	FunctionName m_function{ FunctionName::None };
 };
 

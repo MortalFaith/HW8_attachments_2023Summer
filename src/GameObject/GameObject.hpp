@@ -384,7 +384,9 @@ class Zombie : public ObjectAffectWorld
 {
 public:
 	static inline const int ZombieWidth = 20, ZombieHeight = 80, ZombieGamage = 3;
-
+	static inline int const MinX = WINDOW_WIDTH - 40;
+	static inline int const MaxX = WINDOW_WIDTH - 1;
+	static inline int const PossibleY[5] = { 75, 175, 275, 375, 475 };
 	Zombie(ImageID imageID, int x, int y, int HP, int speed, AnimID animID, pGameWorld thisworld) : ObjectAffectWorld(imageID, x, y, LAYER_ZOMBIES, ZombieWidth, ZombieHeight, animID, thisworld, ObjectType::Zombie), m_HP(HP), m_speed(speed) {};
 
 	virtual void Update();
