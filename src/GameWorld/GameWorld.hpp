@@ -51,6 +51,8 @@ public:
   bool existZombie(int x, int y); //{ return true; };
   bool isCollide(pGameObject left, pGameObject right);
 
+  void EraseDead();
+
 private: 
 
 	std::list<pGameObject> m_objects{};

@@ -39,12 +39,16 @@ LevelStatus GameWorld::Update() {
 		m_objects.emplace_front(std::make_shared<SunSky>(randInt(SunSky::MinX, SunSky::MaxX), WINDOW_HEIGHT - 1, randInt(SunSky::MinFallTime, SunSky::MaxFallTime), shared_from_this()));
 	}
 
-	for (auto item = m_objects.begin(); item != m_objects.end(); item ++)
+	for (auto item = m_objects.begin(); item != m_objects.end();)
 	{
 		(*item)->Update();
 		if (GameObject::Status::Dead == (*item)->GetStatus())
 		{
 			item = m_objects.erase(item);
+		}
+		else
+		{
+			item++;
 		}
 	}
 	for (auto item = m_objects.begin(); item != m_objects.end(); item++)
@@ -97,11 +101,8 @@ bool GameWorld::isCollide(pGameObject object1, pGameObject object2)
 {
 	if (object1->GetX() <= object2->GetX())
 	{
-		//std::cout << object1->GetRightEdge() - object2->GetLetfEdge();
-		//system("pause");
 		if (object1->GetRightEdge() > object2->GetLetfEdge() && object1->GetLetfEdge() < object2->GetRightEdge())
 		{
-		//	std::cout << "test true" << std::endl;
 			return true;
 		}
 	}
@@ -109,11 +110,24 @@ bool GameWorld::isCollide(pGameObject object1, pGameObject object2)
 	{
 		if (object2->GetRightEdge() > object1->GetLetfEdge() && object2->GetLetfEdge() < object1->GetRightEdge())
 		{
-		//	std::cout << "test true" << std::endl;
 			return true;
 		}
 
 	}
-	//std::cout << "test false" << std::endl;
 	return false;
+}
+
+void GameWorld::EraseDead()
+{
+	for (auto item = m_objects.begin(); item != m_objects.end();)
+	{
+		if (GameObject::Status::Dead == (*item)->GetStatus())
+		{
+			item = m_objects.erase(item);
+		}
+		else
+		{
+			item++;
+		}
+	}
 }

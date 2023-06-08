@@ -48,8 +48,8 @@ public:
   virtual int GetRightEdge() { return GetX() + GetWidth() / 2; };
 
   virtual void addCollided(pGameObject object) { m_collided.push_back(object); };
-  auto collidedBegin() { return m_collided.cbegin(); };
-  auto collidedEnd() { return m_collided.cend(); };
+  auto collidedBegin() { return m_collided.crbegin(); };
+  auto collidedEnd() { return m_collided.crend(); };
   bool isCollideEmpty() { return m_collided.empty(); };
 
   virtual void Colliding() {};
@@ -260,6 +260,8 @@ public:
 	virtual void Update() = 0;
 	virtual void OnClick() = 0;
 
+	virtual void Colliding();
+
 	int GetHP() { return m_HP; };
 	void SetHP(int HP) { m_HP = HP; };
 
@@ -387,11 +389,11 @@ public:
 
 	virtual void Update();
 	virtual void OnClick() {};
-	virtual int GetDamdge() { return ZombieGamage; };
-	virtual void Colliding();
+	virtual int GetDamage() { return ZombieGamage; };
+	virtual void Colliding() {};
+	virtual void Colliding(int speed);
 
-	//int GetHP() { return m_HP; };
-	//void SetHP(int HP) { m_HP = HP; };
+
 
 protected:
 	int m_HP;
@@ -407,6 +409,7 @@ public:
 
 	virtual void Update() { Zombie::Update(); };
 	virtual void OnClick() {};
+	virtual void Colliding() { Zombie::Colliding(RegularZombieSpeed); };
 
 };
 
@@ -419,6 +422,8 @@ public:
 
 	virtual void Update();
 	virtual void OnClick() {};
+	virtual void Colliding() { Zombie::Colliding(BucketZombieSpeed); };
+
 };
 
 class PoleZombie : public Zombie
@@ -430,6 +435,8 @@ public :
 
 	virtual void Update();
 	virtual void OnClick() {};
+	virtual void Colliding() { Zombie::Colliding(PoleZombieRunSpeed); };
+
 };
 
 #endif // !GAMEOBJECT_HPP__
