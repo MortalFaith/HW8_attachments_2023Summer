@@ -19,7 +19,7 @@ void GameWorld::Init() {
 	m_objects.emplace_front(std::make_shared<RepeaterSeed>(shared_from_this()));
 	m_objects.emplace_front(std::make_shared<Shovel>(shared_from_this()));
 
-	m_objects.emplace_front(std::make_shared<ZombieSeed>(shared_from_this()));
+	//m_objects.emplace_front(std::make_shared<ZombieSeed>(shared_from_this()));
 
 	for (int i = 0; i < GAME_ROWS; i++)
 	{
@@ -43,12 +43,10 @@ LevelStatus GameWorld::Update() {
 	m_ZombieCountDown--;
 	if (m_ZombieCountDown == 0)
 	{
+		int ZombieCreateTime = 600 - 20 * GetWave();
+		m_ZombieCountDown = ZombieMinCreateTime > ZombieCreateTime ? ZombieMinCreateTime : ZombieCreateTime;
 
-		m_ZombieCountDown = 150 > 600 - 20 * GetWave() ? 150 : 600 - 20 * GetWave();
-		//m_ZombieCountDown /= 1;
-		//NOTICE! "/10" is used for test!!!
 		int ZombieNum = (15 + GetWave()) / 10;
-		//NOTICE! "*10" is used for test!!!
 
 		static int const ProbabilityRegular_Zombie = 20;
 		int ProbabilityPole_Vaulting_Zombie = 2 * (GetWave() - 8 > 0 ? GetWave() - 8 : 0);

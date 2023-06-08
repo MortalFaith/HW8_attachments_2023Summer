@@ -23,7 +23,7 @@ void SunOfFlower::Update()
 {
 	int speed = 4;
 	const int acrate = -1;
-	if (m_falltime > 1)
+	if (m_falltime != 1)
 	{
 		m_falltime--;
 		MoveTo(GetX() + speed, GetY() - 1);
@@ -34,10 +34,11 @@ void SunOfFlower::Update()
 
 void SunSky::Update()
 {
+	int speed = 2;
 	if (m_falltime > 1)
 	{
 		m_falltime--;
-		MoveTo(GetX(), GetY() - 2);
+		MoveTo(GetX(), GetY() - speed);
 	}
 	else
 	{
@@ -118,12 +119,12 @@ void CoolDown::Update()
 
 void CoolDown::OnClick()
 {
-	if (m_world->GetFunction() == m_covered)
+	/*if (m_world->GetFunction() == m_covered)
 	{
 		ChangeStatus();
 		m_world->SetSun(m_world->GetSun() + m_CoveredPrice);
 		m_world->SetFunction(FunctionName::None);
-	}
+	}*/
 }
 
 void Plant::Update()

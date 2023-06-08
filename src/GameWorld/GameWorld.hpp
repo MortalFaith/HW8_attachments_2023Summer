@@ -31,9 +31,11 @@ public:
   // Use shared_from_this() instead of "this".
 	static inline int const SunStartCount = 180;
 	static inline int const SunCountInterval = 300;
-	static inline int const InitSun = 5000;
+	static inline int const InitSun = 50;
 	static inline int const InitWave = 0;
 	static inline int const ZombieStartCount = 1200;
+	static inline int const ZombieMinCreateTime = 150;
+
 
   GameWorld();
   virtual ~GameWorld();
