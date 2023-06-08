@@ -150,7 +150,6 @@ void Plant::Colliding()
 	for (auto item = collidedBegin(); item != collidedEnd(); item++)
 	{
 		m_HP -= (*item)->GetDamage();
-		std::cout << m_HP << std::endl;
 		if (m_HP <= 0)
 		{
 			return;
