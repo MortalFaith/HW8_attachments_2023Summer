@@ -274,8 +274,9 @@ void Repeater::Update()
 		}
 	}
 }*/
-/*
-void Zombie::Update()
+
+
+/* void Zombie::Update()
 {
 	GameObject::Update();
 	if (m_HP <= 0 || GetX() <= 0)
@@ -331,10 +332,6 @@ void BucketZombie::Update()
 
 void PoleZombie::Update()
 {
-<<<<<<< HEAD
-	Zombie::Update();
-}*/
-=======
 	if(m_AnimPlayingtime == PoleZombieAnimPlaytime)
 	{
 		Zombie::Update();
@@ -409,4 +406,4 @@ void PoleZombie::Colliding()
 		Zombie::Colliding(PoleZombieWalkSpeed);
 	}
 }
->>>>>>> 982815bef6fae8cd8de72c63f43ba30c10b74e4f
+*/
