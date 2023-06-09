@@ -1,4 +1,7 @@
 #include "GameObject.hpp"
+#include "Plant.hpp"
+#include "Seed.hpp"
+#include "Zombie.hpp"
 
 void Sun::Update()
 {
@@ -92,7 +95,7 @@ void Shovel::OnClick()
 	}
 }
 
-
+/*
 void Seed::OnClickTemplt(FunctionName functionname)
 {
 	if (int result = m_world->GetSun() - m_price; result >= 0 && m_world->GetFunction() == FunctionName::None)
@@ -101,7 +104,7 @@ void Seed::OnClickTemplt(FunctionName functionname)
 		m_world->AddObject(std::make_shared<CoolDown>(GetX(), GetY(), m_CoolTime, functionname,m_price ,m_world));
 		m_world->SetFunction(functionname);
 	}
-}
+}*/
 
 
 void CoolDown::Update()
@@ -125,7 +128,7 @@ void CoolDown::OnClick()
 		m_world->SetFunction(FunctionName::None);
 	}
 }
-
+/*
 void Plant::Update()
 {
 	GameObject::Update();
@@ -186,7 +189,7 @@ void Peashooter::Update()
 			m_CoolTime = PeashooterInterval;
 		}
 	}
-}
+}*/
 
 
 void Pea::Update()
@@ -207,7 +210,7 @@ void Pea::Colliding()
 		ChangeStatus();
 	}
 }
-
+/*
 void Wallnut::Update()
 {
 	Plant::Update();
@@ -230,7 +233,7 @@ void Cherry::Update()
 		ChangeStatus();
 		m_world->AddObject(std::make_shared<Boom>(GetX(), GetY(), m_world));
 	}
-}
+}*/
 
 void Boom::Update()
 {
@@ -244,7 +247,7 @@ void Boom::Update()
 		ChangeStatus();
 	}
 }
-
+/*
 void Repeater::Update()
 {
 	Plant::Update();
@@ -269,8 +272,8 @@ void Repeater::Update()
 			m_ShootCoolTime = RepeaterInterval;
 		}
 	}
-}
-
+}*/
+/*
 void Zombie::Update()
 {
 	GameObject::Update();
@@ -328,4 +331,4 @@ void BucketZombie::Update()
 void PoleZombie::Update()
 {
 	Zombie::Update();
-}
+}*/

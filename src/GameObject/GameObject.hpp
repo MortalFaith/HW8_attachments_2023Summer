@@ -154,7 +154,7 @@ public:
 	virtual void OnClick() ;
 
 };
-
+/*
 class Seed : public ObjectAffectWorld
 {
 public:
@@ -169,8 +169,8 @@ public:
 private:
 	const int m_price;
 	const int m_CoolTime;
-};
-
+};*/
+/*
 class ZombieSeed : public Seed
 {
 public:
@@ -232,7 +232,7 @@ public:
 	virtual void OnClick() { Seed::OnClickTemplt(FunctionName::PlantRepeater); };
 
 };
-
+*/
 class CoolDown : public ObjectAffectWorld
 {
 public:
@@ -249,8 +249,7 @@ private:
 	int m_CoveredPrice;
 };
 
-
-
+/*
 class Plant : public ObjectAffectWorld
 {
 public:
@@ -295,7 +294,7 @@ public:
 
 private:
 	int m_CoolTime{0};
-};
+};*/
 
 
 class Attack : public ObjectAffectWorld
@@ -319,7 +318,7 @@ public :
 
 };
 
-
+/*
 class Wallnut : public Plant
 {
 public:
@@ -347,7 +346,7 @@ public:
 private:
 	int m_BoomTime{CherryBoomTime};
 
-};
+};*/
 
 class Boom : public Attack
 {
@@ -364,7 +363,7 @@ private:
 	int m_time{BoomTime};
 };
 
-
+/*
 class Repeater : public Plant
 {
 public:
@@ -378,8 +377,8 @@ public:
 private:
 	int m_ShootCoolTime{0};
 };
-
-
+*/
+/*
 class Zombie : public ObjectAffectWorld
 {
 public:
@@ -440,5 +439,5 @@ public :
 	virtual void Colliding() { Zombie::Colliding(PoleZombieRunSpeed); };
 
 };
-
+*/
 #endif // !GAMEOBJECT_HPP__

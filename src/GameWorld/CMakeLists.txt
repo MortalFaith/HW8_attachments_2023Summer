@@ -18,4 +18,7 @@ target_include_directories(
   ${CMAKE_SOURCE_DIR}/src/
   ${CMAKE_SOURCE_DIR}/src/Framework/
   ${CMAKE_SOURCE_DIR}/src/GameObject/
+  ${CMAKE_SOURCE_DIR}/src/GameObject/Plant/
+  ${CMAKE_SOURCE_DIR}/src/GameObject/Seed/
+  ${CMAKE_SOURCE_DIR}/src/GameObject/Zombie/
 )
