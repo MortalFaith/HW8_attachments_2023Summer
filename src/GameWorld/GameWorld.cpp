@@ -41,7 +41,7 @@ LevelStatus GameWorld::Update() {
 
 		m_objects.emplace_front(std::make_shared<SunSky>(randInt(SunSky::MinX, SunSky::MaxX), WINDOW_HEIGHT - 1, randInt(SunSky::MinFallTime, SunSky::MaxFallTime), shared_from_this()));
 	}
-
+	
 	m_ZombieCountDown--;
 	if (m_ZombieCountDown == 0)
 	{
