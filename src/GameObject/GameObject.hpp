@@ -142,6 +142,7 @@ public:
 	virtual void Update() {};
 
 };
+//moved to Plant.hpp 
 
 class Shovel : public ObjectAffectWorld
 {
@@ -154,7 +155,7 @@ public:
 	virtual void OnClick() ;
 
 };
-
+/*
 class Seed : public ObjectAffectWorld
 {
 public:
@@ -169,14 +170,6 @@ public:
 private:
 	const int m_price;
 	const int m_CoolTime;
-};
-
-class ZombieSeed : public Seed
-{
-public:
-	ZombieSeed(pGameWorld thisworld) :Seed(IMGID_SEED_CHERRY_BOMB, 6, 0, 0, thisworld) {};
-	virtual void Update() {};
-	virtual void OnClick() { Seed::OnClickTemplt(FunctionName::TestZombie); };
 };
 
 class SunFlowerSeed : public Seed
@@ -231,7 +224,8 @@ public:
 	virtual void Update() {};
 	virtual void OnClick() { Seed::OnClickTemplt(FunctionName::PlantRepeater); };
 
-};
+};*/
+//moved to Seed.hpp
 
 class CoolDown : public ObjectAffectWorld
 {
@@ -250,7 +244,7 @@ private:
 };
 
 
-
+/*
 class Plant : public ObjectAffectWorld
 {
 public:
@@ -296,8 +290,8 @@ public:
 private:
 	int m_CoolTime{0};
 };
-
-
+*/
+//moved to Plant.hpp
 class Attack : public ObjectAffectWorld
 {
 public:
@@ -319,7 +313,7 @@ public :
 
 };
 
-
+/*
 class Wallnut : public Plant
 {
 public:
@@ -347,7 +341,8 @@ public:
 private:
 	int m_BoomTime{CherryBoomTime};
 
-};
+};*/
+//moved to Plant.hpp
 
 class Boom : public Attack
 {
@@ -364,7 +359,7 @@ private:
 	int m_time{BoomTime};
 };
 
-
+/*
 class Repeater : public Plant
 {
 public:
@@ -377,16 +372,15 @@ public:
 
 private:
 	int m_ShootCoolTime{0};
-};
+};*/
+//moved to Plant.hpp
 
-
+/*
 class Zombie : public ObjectAffectWorld
 {
 public:
 	static inline const int ZombieWidth = 20, ZombieHeight = 80, ZombieGamage = 3;
-	static inline int const MinX = WINDOW_WIDTH - 40;
-	static inline int const MaxX = WINDOW_WIDTH - 1;
-	static inline int const PossibleY[5] = { 75, 175, 275, 375, 475 };
+
 	Zombie(ImageID imageID, int x, int y, int HP, int speed, AnimID animID, pGameWorld thisworld) : ObjectAffectWorld(imageID, x, y, LAYER_ZOMBIES, ZombieWidth, ZombieHeight, animID, thisworld, ObjectType::Zombie), m_HP(HP), m_speed(speed) {};
 
 	virtual void Update();
@@ -440,5 +434,5 @@ public :
 	virtual void Colliding() { Zombie::Colliding(PoleZombieRunSpeed); };
 
 };
-
+*/
 #endif // !GAMEOBJECT_HPP__
