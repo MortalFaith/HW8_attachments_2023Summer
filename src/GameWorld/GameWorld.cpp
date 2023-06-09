@@ -20,6 +20,11 @@ void GameWorld::Init() {
 	m_objects.emplace_front(std::make_shared<RepeaterSeed>(shared_from_this()));
 	m_objects.emplace_front(std::make_shared<Shovel>(shared_from_this()));
 
+<<<<<<< HEAD
+=======
+	//m_objects.emplace_front(std::make_shared<ZombieSeed>(shared_from_this()));
+
+>>>>>>> 982815bef6fae8cd8de72c63f43ba30c10b74e4f
 	for (int i = 0; i < GAME_ROWS; i++)
 	{
 		for (int j = 0; j < GAME_COLS; j++)
@@ -39,6 +44,37 @@ LevelStatus GameWorld::Update() {
 		m_objects.emplace_front(std::make_shared<SunSky>(randInt(SunSky::MinX, SunSky::MaxX), WINDOW_HEIGHT - 1, randInt(SunSky::MinFallTime, SunSky::MaxFallTime), shared_from_this()));
 	}
 
+<<<<<<< HEAD
+=======
+	m_ZombieCountDown--;
+	if (m_ZombieCountDown == 0)
+	{
+		int ZombieCreateTime = 600 - 20 * GetWave();
+		m_ZombieCountDown = ZombieMinCreateTime > ZombieCreateTime ? ZombieMinCreateTime : ZombieCreateTime;
+
+		int ZombieNum = (15 + GetWave()) / 10;
+
+		static int const ProbabilityRegular_Zombie = 20;
+		int ProbabilityPole_Vaulting_Zombie = 2 * (GetWave() - 8 > 0 ? GetWave() - 8 : 0);
+		int ProbabilityBucket_Head_Zombie = 3 * (GetWave() - 15 > 0 ? GetWave() - 15 : 0);
+
+		while (ZombieNum > 0) {
+			ZombieNum--;
+			int m_Probability = randInt(0, ProbabilityRegular_Zombie + ProbabilityPole_Vaulting_Zombie + ProbabilityBucket_Head_Zombie);
+			if (m_Probability < ProbabilityRegular_Zombie) {
+				m_objects.emplace_front(std::make_shared<RegularZombie>(randInt(Zombie::MinX, Zombie::MaxX), Zombie::PossibleY[randInt(0, 4)], shared_from_this()));
+			}
+			else if (m_Probability < ProbabilityRegular_Zombie + ProbabilityPole_Vaulting_Zombie) {
+				m_objects.emplace_front(std::make_shared<PoleZombie>(randInt(Zombie::MinX, Zombie::MaxX), Zombie::PossibleY[randInt(0, 4)], shared_from_this()));
+			}
+			else {
+				m_objects.emplace_front(std::make_shared<BucketZombie>(randInt(Zombie::MinX, Zombie::MaxX), Zombie::PossibleY[randInt(0, 4)], shared_from_this()));
+			}
+		}
+		SetWave(GetWave() + 1);
+	}
+
+>>>>>>> 982815bef6fae8cd8de72c63f43ba30c10b74e4f
 	for (auto item = m_objects.begin(); item != m_objects.end();)
 	{
 		(*item)->Update();
@@ -57,7 +93,7 @@ LevelStatus GameWorld::Update() {
 		{
 			if ((*item)->GetX() <= 0)
 			{
-				return LevelStatus::LOSING;
+				//return LevelStatus::LOSING;
 			}
 			for (auto other = m_objects.begin(); other != m_objects.end(); other++)
 			{
@@ -102,20 +138,39 @@ bool GameWorld::existZombie(int x, int y)
 
 
 bool GameWorld::isCollide(pGameObject object1, pGameObject object2)
+<<<<<<< HEAD
 {
 	if (object1->GetX() <= object2->GetX())
+=======
+{	
+	if (std::abs(object1->GetY() - object2->GetY()) <= Peashooter::PeaCreateOffsetY)
+>>>>>>> 982815bef6fae8cd8de72c63f43ba30c10b74e4f
 	{
 		if (object1->GetRightEdge() > object2->GetLetfEdge() && object1->GetLetfEdge() < object2->GetRightEdge())
 		{
+<<<<<<< HEAD
 			return true;
+=======
+			if (object1->GetRightEdge() > object2->GetLeftEdge() && object1->GetLeftEdge() < object2->GetRightEdge())
+			{
+				return true;
+			}
+>>>>>>> 982815bef6fae8cd8de72c63f43ba30c10b74e4f
 		}
 	}
 	else
 	{
 		if (object2->GetRightEdge() > object1->GetLetfEdge() && object2->GetLetfEdge() < object1->GetRightEdge())
 		{
+<<<<<<< HEAD
 			return true;
 		}
+=======
+			if (object2->GetRightEdge() > object1->GetLeftEdge() && object2->GetLeftEdge() < object1->GetRightEdge())
+			{
+				return true;
+			}
+>>>>>>> 982815bef6fae8cd8de72c63f43ba30c10b74e4f
 
 	}
 	return false;

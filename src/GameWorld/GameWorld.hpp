@@ -33,6 +33,12 @@ public:
 	static inline int const SunCountInterval = 300;
 	static inline int const InitSun = 5000;
 	static inline int const InitWave = 0;
+<<<<<<< HEAD
+=======
+	static inline int const ZombieStartCount = 1200;
+	static inline int const ZombieMinCreateTime = 150;
+
+>>>>>>> 982815bef6fae8cd8de72c63f43ba30c10b74e4f
 
   GameWorld();
   virtual ~GameWorld();

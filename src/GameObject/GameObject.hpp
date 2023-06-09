@@ -42,7 +42,7 @@ public:
   virtual int GetDamage() { return 0; };
 
 //absolute position
-  virtual int GetLetfEdge() { return GetX() - GetWidth() / 2; }; 
+  virtual int GetLeftEdge() { return GetX() - GetWidth() / 2; }; 
 
 //absolute position
   virtual int GetRightEdge() { return GetX() + GetWidth() / 2; };
@@ -132,10 +132,10 @@ public:
 	void Update();
 };
 
-class PlantSpot : public ObjectAffectWorld  // option<>
+class PlantSpot : public ObjectAffectWorld
 {
 public:
-	static inline const int PlantSpotWidth = 60, PlantSpotHeight = 80;
+	static inline const int PlantSpotWidth = 80, PlantSpotHeight = 60;
 
 	PlantSpot(int x, int y, pGameWorld thisworld) : ObjectAffectWorld(IMGID_NONE, x, y, LAYER_UI, PlantSpotWidth, PlantSpotHeight, ANIMID_NO_ANIMATION, thisworld, ObjectType::Others) {};
 	virtual void OnClick();
@@ -267,14 +267,14 @@ protected:
 class SunFlower : public Plant
 {
 public:
-	static inline const int SunFlowerHP = 300, SunFlowerInterval = 600;
+	static inline const int SunFlowerHP = 300, SunFlowerInterval = 600, SunFlowerStartMin = 60, SunFlowerStartMax = 600;
 
 	SunFlower(int x, int y, pGameWorld thisworld) : Plant(IMGID_SUNFLOWER, x, y, SunFlowerHP, thisworld) {};
 	virtual void Update();
 	virtual void OnClick() { Plant::OnClick(); };
 
 private:
-	int m_CoolTime{randInt(30, 600)};
+	int m_CoolTime{randInt(SunFlowerStartMin, SunFlowerStartMax)};
 };
 
 class Peashooter : public Plant
@@ -425,14 +425,19 @@ public:
 class PoleZombie : public Zombie
 {
 public :
-	static inline const int PoleZombieHP = 340, PoleZombieRunSpeed = 2, PoleZombieWalkSpeed = 1, JumpTestX = 40;
+	static inline const int PoleZombieHP = 340, PoleZombieRunSpeed = 2, PoleZombieWalkSpeed = 1, JumpTestX = 40, PoleZombieAnimPlaytime = 42, PoleZombieJumpX = 150;;
 
 	PoleZombie(int x, int y, pGameWorld thisworld) : Zombie(IMGID_POLE_VAULTING_ZOMBIE, x, y, PoleZombieHP, PoleZombieRunSpeed, ANIMID_RUN_ANIM, thisworld) {};
 
 	virtual void Update();
 	virtual void OnClick() {};
-	virtual void Colliding() { Zombie::Colliding(PoleZombieRunSpeed); };
+	virtual void Colliding();
+	virtual int GetLeftEdge();
+	virtual int GetRightEdge();
 
+private :
+	bool m_isRunning{true};
+	int m_AnimPlayingtime{ PoleZombieAnimPlaytime };
 };
 */
 #endif // !GAMEOBJECT_HPP__
