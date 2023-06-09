@@ -45,12 +45,10 @@ LevelStatus GameWorld::Update() {
 	m_ZombieCountDown--;
 	if (m_ZombieCountDown == 0)
 	{
+		int ZombieCreateTime = 600 - 20 * GetWave();
+		m_ZombieCountDown = ZombieMinCreateTime > ZombieCreateTime ? ZombieMinCreateTime : ZombieCreateTime;
 
-		m_ZombieCountDown = 150 > 600 - 20 * GetWave() ? 150 : 600 - 20 * GetWave();
-		//m_ZombieCountDown /= 1;
-		//NOTICE! "/10" is used for test!!!
 		int ZombieNum = (15 + GetWave()) / 10;
-		//NOTICE! "*10" is used for test!!!
 
 		static int const ProbabilityRegular_Zombie = 20;
 		int ProbabilityPole_Vaulting_Zombie = 2 * (GetWave() - 8 > 0 ? GetWave() - 8 : 0);
@@ -90,7 +88,7 @@ LevelStatus GameWorld::Update() {
 		{
 			if ((*item)->GetX() <= 0)
 			{
-				return LevelStatus::LOSING;
+				//return LevelStatus::LOSING;
 			}
 			for (auto other = m_objects.begin(); other != m_objects.end(); other++)
 			{
@@ -136,18 +134,18 @@ bool GameWorld::existZombie(int x, int y)
 
 bool GameWorld::isCollide(pGameObject object1, pGameObject object2)
 {	
-	if (object1->GetY() == object2->GetY())
+	if (std::abs(object1->GetY() - object2->GetY()) <= Peashooter::PeaCreateOffsetY)
 	{
 		if (object1->GetX() <= object2->GetX())
 		{
-			if (object1->GetRightEdge() > object2->GetLetfEdge() && object1->GetLetfEdge() < object2->GetRightEdge())
+			if (object1->GetRightEdge() > object2->GetLeftEdge() && object1->GetLeftEdge() < object2->GetRightEdge())
 			{
 				return true;
 			}
 		}
 		else
 		{
-			if (object2->GetRightEdge() > object1->GetLetfEdge() && object2->GetLetfEdge() < object1->GetRightEdge())
+			if (object2->GetRightEdge() > object1->GetLeftEdge() && object2->GetLeftEdge() < object1->GetRightEdge())
 			{
 				return true;
 			}

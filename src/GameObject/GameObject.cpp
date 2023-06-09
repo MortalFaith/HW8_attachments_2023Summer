@@ -26,7 +26,7 @@ void SunOfFlower::Update()
 {
 	int speed = 4;
 	const int acrate = -1;
-	if (m_falltime > 1)
+	if (m_falltime != 1)
 	{
 		m_falltime--;
 		MoveTo(GetX() + speed, GetY() - 1);
@@ -37,10 +37,11 @@ void SunOfFlower::Update()
 
 void SunSky::Update()
 {
+	int speed = 2;
 	if (m_falltime > 1)
 	{
 		m_falltime--;
-		MoveTo(GetX(), GetY() - 2);
+		MoveTo(GetX(), GetY() - speed);
 	}
 	else
 	{
@@ -73,7 +74,7 @@ void PlantSpot::OnClick()
 		break;
 
 	case FunctionName::TestZombie:
-		m_world->AddObject(std::make_shared<RegularZombie>(GetX(), GetY(), m_world));
+		m_world->AddObject(std::make_shared<PoleZombie>(GetX(), GetY(), m_world));
 		break;
 
 	default:
@@ -121,12 +122,12 @@ void CoolDown::Update()
 
 void CoolDown::OnClick()
 {
-	if (m_world->GetFunction() == m_covered)
+	/*if (m_world->GetFunction() == m_covered)
 	{
 		ChangeStatus();
 		m_world->SetSun(m_world->GetSun() + m_CoveredPrice);
 		m_world->SetFunction(FunctionName::None);
-	}
+	}*/
 }
 /*
 void Plant::Update()
@@ -330,5 +331,82 @@ void BucketZombie::Update()
 
 void PoleZombie::Update()
 {
+<<<<<<< HEAD
 	Zombie::Update();
 }*/
+=======
+	if(m_AnimPlayingtime == PoleZombieAnimPlaytime)
+	{
+		Zombie::Update();
+	}
+	else if(m_AnimPlayingtime != 0)
+	{
+		m_AnimPlayingtime--;
+		GameObject::Update();
+	}
+	else if(m_AnimPlayingtime == 0)
+	{
+		GameObject::Update();
+		m_speed = PoleZombieWalkSpeed;
+		m_isRunning = false;
+		m_AnimPlayingtime = PoleZombieAnimPlaytime;
+		PlayAnimation(ANIMID_WALK_ANIM);
+		MoveTo(GetX() - PoleZombieJumpX, GetY());
+	}
+}
+
+int PoleZombie::GetLeftEdge()
+{
+	if (m_isRunning)
+	{
+		return GameObject::GetLeftEdge() - JumpTestX;
+	}
+	else
+	{
+		return GameObject::GetLeftEdge();
+	}
+}
+
+int PoleZombie::GetRightEdge()
+{
+	if (m_isRunning)
+	{
+		return GameObject::GetRightEdge() - JumpTestX;
+	}
+	else
+	{
+		return GameObject::GetRightEdge();
+	}
+}
+
+void PoleZombie::Colliding()
+{
+	if (m_isRunning)
+	{
+		int num_plant = 0;
+		for(auto item = collidedBegin(); item != collidedEnd(); item ++)
+		{
+			m_HP -= (*item)->GetDamage();
+			if (m_HP <= 0)
+			{
+				ChangeStatus();
+				return;
+			}
+			if ((*item)->GetType() == ObjectType::Plant)
+			{
+				num_plant++;
+			}
+		}
+		if (num_plant != 0 && m_AnimPlayingtime == PoleZombieAnimPlaytime)
+		{
+			m_speed = 0;
+			m_AnimPlayingtime--;
+			PlayAnimation(ANIMID_JUMP_ANIM);
+		}
+	}
+	else
+	{
+		Zombie::Colliding(PoleZombieWalkSpeed);
+	}
+}
+>>>>>>> 982815bef6fae8cd8de72c63f43ba30c10b74e4f
