@@ -42,7 +42,7 @@ private:
   AnimID m_animID;
   std::size_t m_currentFrame;
 
-private:
+public:
   template<typename Func>
   static void DisplayAllObjects(Func displayAndAnimateFunc) {
     for (int layer = MAX_LAYERS - 1; layer >= 0; layer--) {

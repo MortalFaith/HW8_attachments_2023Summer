@@ -32,7 +32,8 @@ public:
   
   GameObject(ImageID imageID, int x, int y, LayerID layer, int width, int height, AnimID animID, ObjectType type) : ObjectBase(imageID, x, y, layer, width, height, animID), m_type(type) {};
 
-  void Update() { m_collided.clear(); };
+  virtual void Update() { m_collided.clear(); };
+  virtual void OnClick() {};
 
   void ChangeStatus() { m_status = Status::Dead; };
   Status GetStatus() { return m_status; };

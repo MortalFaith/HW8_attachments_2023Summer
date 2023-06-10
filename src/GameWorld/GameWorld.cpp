@@ -1,4 +1,5 @@
 #include "GameWorld.hpp"
+#include <cassert>
 #include "Plant.hpp"
 #include "Seed.hpp"
 #include "Zombie.hpp"
@@ -13,7 +14,8 @@ void GameWorld::Init() {
 	SetWave(InitWave);
 	std::srand(time(NULL));
 
-	m_objects.emplace_front(std::make_shared<Background>());
+	m_objects.emplace_back(std::make_shared<GameObject>(IMGID_BACKGROUND, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, LAYER_BACKGROUND, WINDOW_WIDTH, WINDOW_HEIGHT, ANIMID_NO_ANIMATION, GameObject::ObjectType::Others));
+	//m_objects.emplace_front(std::make_shared<Background>());
 	m_objects.emplace_front(std::make_shared<SunFlowerSeed>(shared_from_this()));
 	m_objects.emplace_front(std::make_shared<PeaSeed>(shared_from_this()));
 	m_objects.emplace_front(std::make_shared<WallnutSeed>(shared_from_this()));
@@ -30,6 +32,12 @@ void GameWorld::Init() {
 			m_objects.emplace_front(std::make_shared<PlantSpot>(FIRST_COL_CENTER + LAWN_GRID_WIDTH * j, FIRST_ROW_CENTER + LAWN_GRID_HEIGHT * i,shared_from_this()));
 		}
 	}
+
+	auto plantSpot = m_objects.front();
+	assert(plantSpot->GetWidth() == 60);
+	assert(plantSpot->GetHeight() == 80);
+	assert((plantSpot->GetX() - FIRST_COL_CENTER) % LAWN_GRID_WIDTH == 0);
+	assert((plantSpot->GetY() - FIRST_ROW_CENTER) % LAWN_GRID_HEIGHT == 0);
 }
 
 LevelStatus GameWorld::Update() {
@@ -109,6 +117,7 @@ LevelStatus GameWorld::Update() {
 		(*item)->Colliding();
 	}
 
+	EraseDead();
 
 
   return LevelStatus::ONGOING;
