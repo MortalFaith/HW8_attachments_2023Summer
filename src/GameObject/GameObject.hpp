@@ -117,6 +117,9 @@ public:
 	~SunOfFlower() = default;
 
 	void Update();
+
+private:
+	int m_speed{ 4 };
 };
 
 

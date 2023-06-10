@@ -28,7 +28,7 @@ void GameWorld::Init() {
 	{
 		for (auto j = 0; j < GAME_ROWS; j++)
 		{
-			m_objects.emplace_front(std::make_shared<PlantSpot>(FIRST_COL_CENTER + i * LAWN_GRID_WIDTH, FIRST_ROW_CENTER + j * LAWN_GRID_HEIGHT * j, shared_from_this()));
+			m_objects.emplace_front(std::make_shared<PlantSpot>(FIRST_COL_CENTER + i * LAWN_GRID_WIDTH, FIRST_ROW_CENTER + LAWN_GRID_HEIGHT * j, shared_from_this()));
 		}
 	}
 }

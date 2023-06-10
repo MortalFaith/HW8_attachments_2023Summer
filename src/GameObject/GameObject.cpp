@@ -24,15 +24,14 @@ void Sun::OnClick()
 
 void SunOfFlower::Update()
 {
-	int speed = 4;
 	const int acrate = -1;
-	if (m_falltime != 1)
+	if (m_falltime > 1)
 	{
 		m_falltime--;
-		MoveTo(GetX() + speed, GetY() - 1);
-		speed -= acrate;
+		MoveTo(GetX() - 1, GetY() + m_speed);
+		m_speed += acrate;
 	}
-	Sun::Update();
+	else { Sun::Update(); }
 }
 
 void SunSky::Update()
