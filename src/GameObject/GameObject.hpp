@@ -70,8 +70,8 @@ public :
 	Background() :GameObject(IMGID_BACKGROUND, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, LAYER_BACKGROUND, WINDOW_WIDTH, WINDOW_HEIGHT, ANIMID_NO_ANIMATION, ObjectType::Others) {};
 	~Background() = default;
 
-	virtual void Update() final override {};
-	virtual void OnClick() final override {};
+	void Update() {};
+	void OnClick() {};
 };
 
 // Declares the class name GameWorld so that its pointers can be used.
@@ -136,7 +136,7 @@ public:
 class PlantSpot : public ObjectAffectWorld
 {
 public:
-	static inline const int PlantSpotWidth = 80, PlantSpotHeight = 60;
+	static inline const int PlantSpotWidth = 60, PlantSpotHeight = 80;
 
 	PlantSpot(int x, int y, pGameWorld thisworld) : ObjectAffectWorld(IMGID_NONE, x, y, LAYER_UI, PlantSpotWidth, PlantSpotHeight, ANIMID_NO_ANIMATION, thisworld, ObjectType::Others) {};
 	virtual void OnClick();
