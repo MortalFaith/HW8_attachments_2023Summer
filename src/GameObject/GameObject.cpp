@@ -73,7 +73,7 @@ void PlantSpot::OnClick()
 		break;
 
 	case FunctionName::TestZombie:
-		m_world->AddObject(std::make_shared<PoleZombie>(GetX(), GetY(), m_world));
+		m_world->AddObject(std::make_shared<RegularZombie>(GetX(), GetY(), m_world));
 		break;
 
 	default:
@@ -195,9 +195,9 @@ void Peashooter::Update()
 void Pea::Update()
 {
 	GameObject::Update();
-	int speed = 8;
+	static int speed = 8;
 	MoveTo(GetX() + speed, GetY());
-	if (GetX() > WINDOW_WIDTH)
+	if (GetX() >= WINDOW_WIDTH)
 	{
 		ChangeStatus();
 	}
@@ -205,9 +205,13 @@ void Pea::Update()
 
 void Pea::Colliding()
 {
-	if (!isCollideEmpty())
+	for (auto item = collidedBegin(); item != collidedEnd(); item++)
 	{
-		ChangeStatus();
+		if ((*item)->GetStatus() == GameObject::Status::Alive)
+		{
+			ChangeStatus();
+			return;
+		}
 	}
 }
 /*

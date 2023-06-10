@@ -80,7 +80,7 @@ private:
 class Cherry : public Plant
 {
 public:
-	static inline const int CherryHP = 4000, CherryBoomTime = 15;
+	static inline const int CherryHP = 4000, CherryBoomTime = 15-1;
 
 	Cherry(int x, int y, pGameWorld thisworld) : Plant(IMGID_CHERRY_BOMB, x, y, CherryHP, thisworld) {};
 

@@ -23,7 +23,7 @@ void GameWorld::Init() {
 	m_objects.emplace_front(std::make_shared<RepeaterSeed>(shared_from_this()));
 	m_objects.emplace_front(std::make_shared<Shovel>(shared_from_this()));
 
-	//m_objects.emplace_front(std::make_shared<ZombieSeed>(shared_from_this()));
+	m_objects.emplace_front(std::make_shared<ZombieSeed>(shared_from_this()));
 	for (auto i = 0; i < GAME_COLS; i++)
 	{
 		for (auto j = 0; j < GAME_ROWS; j++)
@@ -89,7 +89,7 @@ LevelStatus GameWorld::Update() {
 		{
 			if ((*item)->GetX() <= 0)
 			{
-				//return LevelStatus::LOSING;
+				return LevelStatus::LOSING;
 			}
 			for (auto other = m_objects.begin(); other != m_objects.end(); other++)
 			{
@@ -110,7 +110,7 @@ LevelStatus GameWorld::Update() {
 		(*item)->Colliding();
 	}
 
-	EraseDead();
+	//EraseDead();
 
 
   return LevelStatus::ONGOING;
