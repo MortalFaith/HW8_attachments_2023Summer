@@ -38,3 +38,7 @@ target_include_directories(
   ${CMAKE_SOURCE_DIR}/src/GameObject/Seed/
   ${CMAKE_SOURCE_DIR}/src/GameObject/Zombie/
 )
+
+add_subdirectory(Plant)
+add_subdirectory(Seed)
+add_subdirectory(Zombie)
