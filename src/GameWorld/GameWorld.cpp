@@ -73,6 +73,7 @@ LevelStatus GameWorld::Update() {
 
 	for (auto item = m_objects.begin(); item != m_objects.end();)
 	{
+
 		(*item)->Update();
 		if (GameObject::Status::Dead == (*item)->GetStatus())
 		{
@@ -89,7 +90,7 @@ LevelStatus GameWorld::Update() {
 		{
 			if ((*item)->GetX() <= 0)
 			{
-				//return LevelStatus::LOSING;
+				return LevelStatus::LOSING;
 			}
 			for (auto other = m_objects.begin(); other != m_objects.end(); other++)
 			{
@@ -110,7 +111,7 @@ LevelStatus GameWorld::Update() {
 		(*item)->Colliding();
 	}
 
-	EraseDead();
+	//EraseDead();
 
 
   return LevelStatus::ONGOING;

@@ -60,6 +60,7 @@ void Plant::Colliding()
 		m_HP -= (*item)->GetDamage();
 		if (m_HP <= 0)
 		{
+			ChangeStatus();
 			return;
 		}
 	}

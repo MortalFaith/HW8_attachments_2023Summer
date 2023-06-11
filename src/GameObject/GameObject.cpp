@@ -197,7 +197,7 @@ void Pea::Update()
 	GameObject::Update();
 	int speed = 8;
 	MoveTo(GetX() + speed, GetY());
-	if (GetX() > WINDOW_WIDTH)
+	if (GetX() >= WINDOW_WIDTH)
 	{
 		ChangeStatus();
 	}
@@ -205,9 +205,12 @@ void Pea::Update()
 
 void Pea::Colliding()
 {
-	if (!isCollideEmpty())
+	for (auto item = collidedBegin(); item != collidedEnd(); item++)
 	{
-		ChangeStatus();
+		if ((*item)->GetStatus() == GameObject::Status::Alive)
+		{
+			ChangeStatus();
+		}
 	}
 }
 /*
