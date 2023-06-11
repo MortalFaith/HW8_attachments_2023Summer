@@ -47,10 +47,12 @@ public:
 
 //absolute position
   virtual int GetRightEdge() { return GetX() + GetWidth() / 2; };
+  int GetUpEdge() { return GetY() + GetHeight() / 2; };
+  int GetDownEdge() { return GetY() - GetHeight() / 2; };
 
   virtual void addCollided(pGameObject object) { m_collided.push_back(object); };
-  auto collidedBegin() { return m_collided.crbegin(); };
-  auto collidedEnd() { return m_collided.crend(); };
+  auto collidedBegin() { return m_collided.cbegin(); };
+  auto collidedEnd() { return m_collided.cend(); };
   bool isCollideEmpty() { return m_collided.empty(); };
 
   virtual void Colliding() {};

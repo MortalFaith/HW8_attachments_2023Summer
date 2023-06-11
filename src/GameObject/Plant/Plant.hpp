@@ -52,7 +52,7 @@ private:
 class Peashooter : public Plant
 {
 public:
-	static inline const int PeashooterHP = 300, PeashooterInterval = 30, PeaCreateOffsetX = 30, PeaCreateOffsetY = 20;
+	static inline const int PeashooterHP = 300, PeashooterInterval = 30, PeaCreateOffsetX = 38, PeaCreateOffsetY = 20;
 
 	Peashooter(int x, int y, pGameWorld thisworld) : Plant(IMGID_PEASHOOTER, x, y, PeashooterHP, thisworld) {};
 

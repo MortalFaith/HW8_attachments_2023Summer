@@ -35,8 +35,6 @@ void Zombie::Colliding(int speed)
 				return;
 			}		
 		}
-
-
 	}
 	if (num_plant != 0 && GetCurrentAnimation() != ANIMID_EAT_ANIM)
 	{
