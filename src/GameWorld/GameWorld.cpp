@@ -111,18 +111,6 @@ LevelStatus GameWorld::Update() {
 		(*item)->Colliding();
 	}
 
-	//for (auto item = m_objects.begin(); item != m_objects.end();)
-	//{
-	//	if (GameObject::Status::Dead == (*item)->GetStatus())
-	//	{
-	//		item = m_objects.erase(item);
-	//	}
-	//	else
-	//	{
-	//		item++;
-	//	}
-	//}
-
   return LevelStatus::ONGOING;
 }
 

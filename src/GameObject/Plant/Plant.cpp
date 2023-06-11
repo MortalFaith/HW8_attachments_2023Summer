@@ -4,35 +4,6 @@
 
 using pGameWorld = std::shared_ptr<GameWorld>;
 
-/*void PlantSpot::OnClick()
-{
-	switch (m_world->GetFunction())
-	{
-	case FunctionName::PlantSunflower:
-		m_world->AddObject(std::make_shared<SunFlower>(GetX(), GetY(), m_world));
-		break;
-
-	case FunctionName::PlantPea:
-		m_world->AddObject(std::make_shared<Peashooter>(GetX(), GetY(), m_world));
-		break;
-
-	case FunctionName::PlantWallnut:
-		m_world->AddObject(std::make_shared<Wallnut>(GetX(), GetY(), m_world));
-		break;
-
-	case FunctionName::PlantCherry:
-		m_world->AddObject(std::make_shared<Cherry>(GetX(), GetY(), m_world));
-		break;
-
-	case FunctionName::PlantRepeater:
-		m_world->AddObject(std::make_shared<Repeater>(GetX(), GetY(), m_world));
-		break;
-
-	default:
-		break;
-	}
-	m_world->SetFunction(FunctionName::None);
-}*/
 
 void Plant::Update()
 {

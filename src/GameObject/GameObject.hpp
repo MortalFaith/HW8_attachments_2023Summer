@@ -165,85 +165,7 @@ public:
 	virtual void OnClick() ;
 
 };
-/*
-class Seed : public ObjectAffectWorld
-{
-public:
-	static inline const int SeedXStart = 130, SeedXInterval = 60, SeedY = WINDOW_HEIGHT - 44, SeedWidth = 50, SeedHeight = 70;
 
-	Seed(ImageID imageID, int x_index, int price, int cooltime, pGameWorld thisworld) : ObjectAffectWorld(imageID, SeedXStart + x_index * SeedXInterval,SeedY, LAYER_UI, SeedWidth, SeedHeight, ANIMID_NO_ANIMATION, thisworld, ObjectType::Others), m_price(price), m_CoolTime(cooltime) {};
-
-	void OnClickTemplt(FunctionName);
-
-	int GetCoolTime() { return m_CoolTime; };
-
-private:
-	const int m_price;
-	const int m_CoolTime;
-};*/
-/*
-class ZombieSeed : public Seed
-{
-public:
-	ZombieSeed(pGameWorld thisworld) :Seed(IMGID_SEED_CHERRY_BOMB, 6, 0, 0, thisworld) {};
-	virtual void Update() {};
-	virtual void OnClick() { Seed::OnClickTemplt(FunctionName::TestZombie); };
-};
-
-class SunFlowerSeed : public Seed
-{
-public:
-	static inline const int SunFlowerSeedPosition = 0, SunFlowerSeedValue = 50, SunFlowereedCoolTime = 240;
-
-	SunFlowerSeed(pGameWorld thisworld) : Seed(IMGID_SEED_SUNFLOWER, SunFlowerSeedPosition, SunFlowerSeedValue, SunFlowereedCoolTime, thisworld) {};
-	virtual void Update() {};
-	virtual void OnClick() { Seed::OnClickTemplt(FunctionName::PlantSunflower); };
-};
-
-class PeaSeed : public Seed
-{
-public:
-	static inline const int PeaSeedPosition = 1, PeaSeedValue = 100, PeaSeedCoolTime = 240;
-
-	PeaSeed(pGameWorld thisworld) : Seed(IMGID_SEED_PEASHOOTER, PeaSeedPosition, PeaSeedValue, PeaSeedCoolTime, thisworld) {};
-	virtual void Update() {};
-	virtual void OnClick() { Seed::OnClickTemplt(FunctionName::PlantPea); };
-
-};
-
-class WallnutSeed : public Seed
-{
-public:
-	static inline const int WallnutSeedPosition = 2, WallnutSeedValue = 50, WallnutSeedCoolTime = 900;
-
-	WallnutSeed(pGameWorld thisworld) : Seed(IMGID_SEED_WALLNUT,WallnutSeedPosition, WallnutSeedValue, WallnutSeedCoolTime, thisworld) {};
-	virtual void Update() {};
-	virtual void OnClick() { Seed::OnClickTemplt(FunctionName::PlantWallnut); };
-
-};
-
-class CherrySeed : public Seed
-{
-public:
-	static inline const int CherrySeedPosition = 3, CherrySeedValue = 150, CherrySeedCoolTime = 1200;
-
-	CherrySeed(pGameWorld thisworld) : Seed(IMGID_SEED_CHERRY_BOMB, CherrySeedPosition, CherrySeedValue, CherrySeedCoolTime, thisworld) {};
-	virtual void Update() {};
-	virtual void OnClick() { Seed::OnClickTemplt(FunctionName::PlantCherry); };
-
-};
-
-class RepeaterSeed : public Seed
-{
-public:
-	static inline const int RepeaterSeedPosition = 4, RepeaterSeedValue = 200, RepeaterSeedCoolTime = 240;
-
-	RepeaterSeed(pGameWorld thisworld) : Seed(IMGID_SEED_REPEATER, RepeaterSeedPosition, RepeaterSeedValue, RepeaterSeedCoolTime, thisworld) {};
-	virtual void Update() {};
-	virtual void OnClick() { Seed::OnClickTemplt(FunctionName::PlantRepeater); };
-
-};
-*/
 class CoolDown : public ObjectAffectWorld
 {
 public:
@@ -259,53 +181,6 @@ private:
 	FunctionName m_covered;
 	int m_CoveredPrice;
 };
-
-/*
-class Plant : public ObjectAffectWorld
-{
-public:
-	static inline const int PlantWidth = 60, PlandHeight = 80;
-	
-	Plant(ImageID imageID, int x, int y, int HP, pGameWorld thisworld) : ObjectAffectWorld(imageID, x, y, LAYER_PLANTS, PlantWidth, PlandHeight, ANIMID_IDLE_ANIM, thisworld, ObjectType::Plant), m_HP(HP) {};
-	virtual void Update() = 0;
-	virtual void OnClick() = 0;
-
-	virtual void Colliding();
-
-	int GetHP() { return m_HP; };
-	void SetHP(int HP) { m_HP = HP; };
-
-
-protected:
-	int m_HP;
-};
-
-class SunFlower : public Plant
-{
-public:
-	static inline const int SunFlowerHP = 300, SunFlowerInterval = 600, SunFlowerStartMin = 60, SunFlowerStartMax = 600;
-
-	SunFlower(int x, int y, pGameWorld thisworld) : Plant(IMGID_SUNFLOWER, x, y, SunFlowerHP, thisworld) {};
-	virtual void Update();
-	virtual void OnClick() { Plant::OnClick(); };
-
-private:
-	int m_CoolTime{randInt(SunFlowerStartMin, SunFlowerStartMax)};
-};
-
-class Peashooter : public Plant
-{
-public:
-	static inline const int PeashooterHP = 300, PeashooterInterval = 30, PeaCreateOffsetX = 30, PeaCreateOffsetY = 20;
-
-	Peashooter(int x, int y, pGameWorld thisworld) : Plant(IMGID_PEASHOOTER, x, y, PeashooterHP, thisworld) {};
-
-	virtual void Update();
-	virtual void OnClick() { Plant::OnClick(); };
-
-private:
-	int m_CoolTime{0};
-};*/
 
 
 class Attack : public ObjectAffectWorld
@@ -329,35 +204,6 @@ public :
 
 };
 
-/*
-class Wallnut : public Plant
-{
-public:
-	static inline const int WallnutHP = 3000, WallnutChangeHP = 1000;
-
-	Wallnut(int x, int y, pGameWorld thisworld) : Plant(IMGID_WALLNUT, x, y, WallnutHP, thisworld) {};
-
-	virtual void Update();
-	virtual void OnClick() { Plant::OnClick(); };
-
-private:
-	bool m_isCracked{false};
-};
-
-class Cherry : public Plant
-{
-public:
-	static inline const int CherryHP = 4000, CherryBoomTime = 15;
-
-	Cherry(int x, int y, pGameWorld thisworld) : Plant(IMGID_CHERRY_BOMB, x, y, CherryHP, thisworld) {};
-
-	virtual void Update();
-	virtual void OnClick() { Plant::OnClick(); };
-
-private:
-	int m_BoomTime{CherryBoomTime};
-
-};*/
 
 class Boom : public Attack
 {
@@ -374,86 +220,5 @@ private:
 	int m_time{BoomTime};
 };
 
-/*
-class Repeater : public Plant
-{
-public:
-	static inline const int RepeaterHP = 300, RepeaterInterval = 25, PeaInterval = -5, RepeaterOffsetX = 30, RepeaterOffsetY = 20;
 
-	Repeater(int x, int y, pGameWorld thisworld) : Plant(IMGID_REPEATER, x, y, RepeaterHP, thisworld) {};
-
-	virtual void Update();
-	virtual void OnClick() { Plant::OnClick(); };
-
-private:
-	int m_ShootCoolTime{0};
-};
-*/
-/*
-class Zombie : public ObjectAffectWorld
-{
-public:
-	static inline const int ZombieWidth = 20, ZombieHeight = 80, ZombieGamage = 3;
-	static inline int const MinX = WINDOW_WIDTH - 40;
-	static inline int const MaxX = WINDOW_WIDTH - 1;
-	static inline int const PossibleY[5] = { 75, 175, 275, 375, 475 };
-	Zombie(ImageID imageID, int x, int y, int HP, int speed, AnimID animID, pGameWorld thisworld) : ObjectAffectWorld(imageID, x, y, LAYER_ZOMBIES, ZombieWidth, ZombieHeight, animID, thisworld, ObjectType::Zombie), m_HP(HP), m_speed(speed) {};
-
-	virtual void Update();
-	virtual void OnClick() {};
-	virtual int GetDamage() { return ZombieGamage; };
-	virtual void Colliding() {};
-	virtual void Colliding(int speed);
-
-
-
-protected:
-	int m_HP;
-	int m_speed;
-};
-
-class RegularZombie : public Zombie
-{
-public:
-	static inline const int RegularZombieHP = 200, RegularZombieSpeed = 1;
-
-	RegularZombie(int x, int y, pGameWorld thisworld) : Zombie(IMGID_REGULAR_ZOMBIE, x, y, RegularZombieHP, RegularZombieSpeed, ANIMID_WALK_ANIM, thisworld) {};
-
-	virtual void Update() { Zombie::Update(); };
-	virtual void OnClick() {};
-	virtual void Colliding() { Zombie::Colliding(RegularZombieSpeed); };
-
-};
-
-class BucketZombie : public Zombie
-{
-public:
-	static inline const int BucketZombieHP = 1300, ZombieHP = 200, BucketZombieSpeed = 1;
-
-	BucketZombie(int x, int y, pGameWorld thisworld) : Zombie(IMGID_BUCKET_HEAD_ZOMBIE, x,y, BucketZombieHP, BucketZombieSpeed,ANIMID_WALK_ANIM ,thisworld) {};
-
-	virtual void Update();
-	virtual void OnClick() {};
-	virtual void Colliding() { Zombie::Colliding(BucketZombieSpeed); };
-
-};
-
-class PoleZombie : public Zombie
-{
-public :
-	static inline const int PoleZombieHP = 340, PoleZombieRunSpeed = 2, PoleZombieWalkSpeed = 1, JumpTestX = 40, PoleZombieAnimPlaytime = 42, PoleZombieJumpX = 150;;
-
-	PoleZombie(int x, int y, pGameWorld thisworld) : Zombie(IMGID_POLE_VAULTING_ZOMBIE, x, y, PoleZombieHP, PoleZombieRunSpeed, ANIMID_RUN_ANIM, thisworld) {};
-
-	virtual void Update();
-	virtual void OnClick() {};
-	virtual void Colliding();
-	virtual int GetLeftEdge();
-	virtual int GetRightEdge();
-
-private :
-	bool m_isRunning{true};
-	int m_AnimPlayingtime{ PoleZombieAnimPlaytime };
-};
-*/
 #endif // !GAMEOBJECT_HPP__
