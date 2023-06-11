@@ -355,7 +355,7 @@ private:
 class Boom : public Attack
 {
 public:
-	static inline const int BoomTime = 3-1, BoomWidth = 3 * LAWN_GRID_WIDTH, BoomHeight = 3 * LAWN_GRID_HEIGHT, BoomDamage = 10000;
+	static inline const int BoomTime = 3, BoomWidth = 3 * LAWN_GRID_WIDTH, BoomHeight = 3 * LAWN_GRID_HEIGHT, BoomDamage = 10000;
 
 	Boom(int x, int y, pGameWorld thisworld) : Attack(IMGID_EXPLOSION, x, y, BoomWidth, BoomHeight, thisworld) {};
 

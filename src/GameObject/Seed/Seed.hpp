@@ -76,12 +76,4 @@ public:
 
 };
 
-class ZombieSeed : public Seed
-{
-public:
-	ZombieSeed(pGameWorld thisworld) :Seed(IMGID_SEED_CHERRY_BOMB, 6, 0, 0, thisworld) {};
-	virtual void Update() {};
-	virtual void OnClick() { Seed::OnClickTemplt(FunctionName::TestZombie); };
-};
-
 #endif

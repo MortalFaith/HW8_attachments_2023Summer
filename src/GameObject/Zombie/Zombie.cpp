@@ -14,29 +14,32 @@ void Zombie::Update()
 
 void Zombie::Colliding(int speed)
 {
-	int num_plant = 0;
-	for (auto item = collidedBegin(); item != collidedEnd(); item++)
-	{
-		m_HP -= (*item)->GetDamage();
-		if (m_HP <= 0)
-		{
-			ChangeStatus();
-			return;
-		}
-		if ((*item)->GetType() == ObjectType::Plant)
-		{
-			num_plant++;
-		}
-	}
-	if (num_plant != 0 && GetCurrentAnimation() != ANIMID_EAT_ANIM)
-	{
-		PlayAnimation(ANIMID_EAT_ANIM);
-		m_speed = 0;
-	}
-	else if (num_plant == 0 && GetCurrentAnimation() != ANIMID_WALK_ANIM)
+	if (isCollideEmpty() && GetCurrentAnimation() != ANIMID_WALK_ANIM)
 	{
 		PlayAnimation(ANIMID_WALK_ANIM);
 		m_speed = speed;
+	}
+	else if (!isCollideEmpty())
+	{
+		int num_plant = 0;
+		for (auto item = collidedBegin(); item != collidedEnd(); item++)
+		{
+			m_HP -= (*item)->GetDamage();
+			if (m_HP <= 0)
+			{
+				ChangeStatus();
+				return;
+			}
+			if ((*item)->GetType() == ObjectType::Plant)
+			{
+				num_plant++;
+			}
+		}
+		if (num_plant != 0 && GetCurrentAnimation() != ANIMID_EAT_ANIM)
+		{
+			PlayAnimation(ANIMID_EAT_ANIM);
+			m_speed = 0;
+		}
 	}
 }
 
