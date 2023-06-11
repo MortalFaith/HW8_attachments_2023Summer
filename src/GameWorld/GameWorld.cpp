@@ -146,7 +146,7 @@ bool GameWorld::existZombie(int x, int y)
 
 bool GameWorld::isCollide(pGameObject object1, pGameObject object2)
 {	
-	if (std::abs(object1->GetY() - object2->GetY()) <= ((object1->GetHeight() + object2->GetHeight()) / 2))
+	if ((object1->GetUpEdge() > object2->GetDownEdge() && object1->GetDownEdge() < object2->GetUpEdge()) || (object2->GetUpEdge() > object1->GetDownEdge() && object2->GetDownEdge() < object1->GetUpEdge()))
 	{
 		if (object1->GetX() <= object2->GetX())
 		{
