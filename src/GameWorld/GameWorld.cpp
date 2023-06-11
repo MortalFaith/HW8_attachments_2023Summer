@@ -86,7 +86,7 @@ LevelStatus GameWorld::Update() {
 	}
 	for (auto item = m_objects.begin(); item != m_objects.end(); item++)
 	{
-		if (GameObject::ObjectType::Zombie == (*item)->GetType())
+		if (GameObject::ObjectType::Zombie == (*item)->GetType() && (*item)->GetStatus() == GameObject::Status::Alive)
 		{
 			if ((*item)->GetX() <= 0)
 			{
@@ -94,7 +94,7 @@ LevelStatus GameWorld::Update() {
 			}
 			for (auto other = m_objects.begin(); other != m_objects.end(); other++)
 			{
-				if ((*other)->GetType() != GameObject::ObjectType::Others && (*other)->GetType() != GameObject::ObjectType::Zombie)
+				if ((*other)->GetType() != GameObject::ObjectType::Others && (*other)->GetType() != GameObject::ObjectType::Zombie && (*other)->GetStatus() == GameObject::Status::Alive)
 				{
 					if (isCollide((*other), (*item)))
 					{
@@ -106,13 +106,30 @@ LevelStatus GameWorld::Update() {
 		}
 	}
 
-	for (auto item = m_objects.begin(); item != m_objects.end(); item++)
+	for (auto item = m_objects.begin(); item != m_objects.end();item++)
 	{
 		(*item)->Colliding();
+		//if (GameObject::Status::Dead == (*item)->GetStatus())
+		//{
+		//	item = m_objects.erase(item);
+		//}
+		//else
+		//{
+		//	item++;
+		//}
 	}
 
-	//EraseDead();
-
+	//for (auto item = m_objects.begin(); item != m_objects.end();)
+	//{
+	//	if (GameObject::Status::Dead == (*item)->GetStatus())
+	//	{
+	//		item = m_objects.erase(item);
+	//	}
+	//	else
+	//	{
+	//		item++;
+	//	}
+	//}
 
   return LevelStatus::ONGOING;
 }
@@ -137,7 +154,7 @@ bool GameWorld::existZombie(int x, int y)
 
 bool GameWorld::isCollide(pGameObject object1, pGameObject object2)
 {	
-	if (std::abs(object1->GetY() - object2->GetY()) <= Peashooter::PeaCreateOffsetY)
+	if (std::abs(object1->GetY() - object2->GetY()) <= ((object1->GetHeight() + object2->GetHeight()) / 2))
 	{
 		if (object1->GetX() <= object2->GetX())
 		{
