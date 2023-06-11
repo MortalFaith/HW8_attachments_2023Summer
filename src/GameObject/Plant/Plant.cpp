@@ -83,7 +83,7 @@ void SunFlower::Update()
 void Peashooter::Update()
 {
 	Plant::Update();
-	if (m_CoolTime > 1)
+	if (m_CoolTime > 0)
 	{
 		m_CoolTime--;
 	}

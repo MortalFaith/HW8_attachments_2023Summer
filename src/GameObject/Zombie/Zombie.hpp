@@ -52,6 +52,9 @@ public:
 	virtual void OnClick() {};
 	virtual void Colliding() { Zombie::Colliding(BucketZombieSpeed); };
 
+private :
+	bool isHead{true};
+
 };
 
 class PoleZombie : public Zombie

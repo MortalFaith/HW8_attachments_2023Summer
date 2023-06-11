@@ -17,16 +17,26 @@ void Zombie::Colliding(int speed)
 	int num_plant = 0;
 	for (auto item = collidedBegin(); item != collidedEnd(); item++)
 	{
-		m_HP -= (*item)->GetDamage();
-		if (m_HP <= 0)
-		{
-			ChangeStatus();
-			return;
-		}
 		if ((*item)->GetType() == ObjectType::Plant)
 		{
 			num_plant++;
+		}		
+		else if((*item)->GetAttackCount() != 0)
+		{
+			m_HP -= (*item)->GetDamage();
+			(*item)->MinusAttackCount();
+			if ((*item)->GetAttackCount() == 0)
+			{
+				(*item)->ChangeStatus();
+			}
+			if (m_HP <= 0)
+			{
+				ChangeStatus();
+				return;
+			}		
 		}
+
+
 	}
 	if (num_plant != 0 && GetCurrentAnimation() != ANIMID_EAT_ANIM)
 	{
@@ -46,9 +56,10 @@ void Zombie::Colliding(int speed)
 void BucketZombie::Update()
 {
 	Zombie::Update();
-	if (m_HP == ZombieHP)
+	if (m_HP <= ZombieHP && isHead)
 	{
 		ChangeImage(IMGID_REGULAR_ZOMBIE);
+		isHead = false;
 	}
 }
 

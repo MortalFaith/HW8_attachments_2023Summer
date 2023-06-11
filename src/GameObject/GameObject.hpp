@@ -55,11 +55,16 @@ public:
 
   virtual void Colliding() {};
 
+  int GetAttackCount() { return m_attack; };
+  void MinusAttackCount() { m_attack--; };
+  void SetAttackCount(int count) { m_attack = count; };
+
 private:
 
 	Status m_status{ Status::Alive };
 	ObjectType m_type;
 	std::vector<pGameObject> m_collided{};
+	int m_attack{ 0 };
 };
 
 
@@ -313,7 +318,7 @@ class Pea : public Attack
 public :
 	static inline const int PeaWidth = 28, PeaHeight = 28, PeaDamage = 20;
 
-	Pea(int x, int y, pGameWorld thisworld) : Attack(IMGID_PEA, x, y, PeaWidth, PeaHeight, thisworld) {};
+	Pea(int x, int y, pGameWorld thisworld) : Attack(IMGID_PEA, x, y, PeaWidth, PeaHeight, thisworld) { SetAttackCount(1); };
 
 	virtual void Update();
 	virtual void OnClick() {};
@@ -357,7 +362,7 @@ class Boom : public Attack
 public:
 	static inline const int BoomTime = 3, BoomWidth = 3 * LAWN_GRID_WIDTH, BoomHeight = 3 * LAWN_GRID_HEIGHT, BoomDamage = 10000;
 
-	Boom(int x, int y, pGameWorld thisworld) : Attack(IMGID_EXPLOSION, x, y, BoomWidth, BoomHeight, thisworld) {};
+	Boom(int x, int y, pGameWorld thisworld) : Attack(IMGID_EXPLOSION, x, y, BoomWidth, BoomHeight, thisworld) { SetAttackCount(10000); };
 
 	virtual void Update();
 	virtual void OnClick() {};

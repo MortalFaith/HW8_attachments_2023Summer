@@ -205,13 +205,6 @@ void Pea::Update()
 
 void Pea::Colliding()
 {
-	for (auto item = collidedBegin(); item != collidedEnd(); item++)
-	{
-		if ((*item)->GetStatus() == GameObject::Status::Alive)
-		{
-			ChangeStatus();
-		}
-	}
 }
 /*
 void Wallnut::Update()
